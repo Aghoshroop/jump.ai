@@ -212,56 +212,108 @@ export function scoreJump(metrics: any) {
 }
 
 export function generateCoaching(scoreData: any, metrics: any) {
-    const phaseScores = scoreData.phase_scores || {};
-    if (Object.keys(phaseScores).length === 0) return null;
+    if (!metrics || Object.keys(metrics).length === 0) return null;
     
-    let worstPhase = Object.keys(phaseScores)[0];
-    for (const phase in phaseScores) {
-        if (phaseScores[phase] < phaseScores[worstPhase]) {
-            worstPhase = phase;
+    let biggestDeficit = -1;
+    let worstIssue = null;
+
+    // 1. Penultimate Step Torso (Ideal ~5-10 degrees)
+    if (metrics.penultimate && metrics.penultimate.torso_angle !== undefined) {
+        const penTorso = metrics.penultimate.torso_angle;
+        const penTorsoDiff = Math.abs(penTorso - 10);
+        if (penTorsoDiff > biggestDeficit) {
+            if (penTorso > 25) {
+                biggestDeficit = penTorsoDiff;
+                worstIssue = {
+                    top_fix: "Raise your chest on the penultimate step.",
+                    why: `Your torso leaned forward at ${penTorso}°. This shifts your center of mass too far forward, killing vertical lift.`,
+                    drill: "Run-throughs with a medicine ball held at chest height to enforce upright posture."
+                };
+            }
         }
     }
-    
-    const m = metrics[worstPhase] || {};
-    
-    if (worstPhase === "plant") {
-        const knee = m.plant_knee_angle || 0;
-        if (knee < 135) {
-            return {
-                top_fix: "Stiffen your plant leg to avoid collapsing.",
-                why: `Your plant knee angle was ${knee}°, meaning you absorbed your speed instead of converting it to vertical lift.`,
-                drill: "Short approach pop-ups focusing on a stiff, quick ground contact."
-            };
-        } else {
-            return {
-                top_fix: "Plant leg is too straight, reducing power.",
-                why: `Your plant knee was ${knee}°, which acts as a brake. You need slight bend to generate force.`,
-                drill: "Box drop jumps to learn proper energy absorption and redirection."
+
+    // 2. Plant Knee (Ideal ~145 degrees)
+    if (metrics.plant && metrics.plant.plant_knee_angle !== undefined) {
+        const plantKnee = metrics.plant.plant_knee_angle;
+        const plantKneeDiff = Math.abs(plantKnee - 145);
+        if (plantKneeDiff > biggestDeficit) {
+            if (plantKnee < 135) {
+                biggestDeficit = plantKneeDiff;
+                worstIssue = {
+                    top_fix: "Stiffen your plant leg on the board.",
+                    why: `Your knee collapsed to ${plantKnee}°. You absorbed your sprint speed instead of converting it into a vertical explosion.`,
+                    drill: "Short approach pop-ups focusing on a stiff, quick ground contact."
+                };
+            } else if (plantKnee > 165) {
+                biggestDeficit = plantKneeDiff;
+                worstIssue = {
+                    top_fix: "Allow a slight bend in your plant leg.",
+                    why: `Your knee was locked straight at ${plantKnee}°, causing a heavy braking force that killed your speed.`,
+                    drill: "Box drop jumps to learn proper energy absorption and redirection."
+                };
+            }
+        }
+    }
+
+    // 3. Toe-Off Extension (Ideal >170 degrees)
+    if (metrics.toe_off && metrics.toe_off.plant_knee_angle !== undefined) {
+        const toeOffKnee = metrics.toe_off.plant_knee_angle;
+        const toeOffDiff = Math.abs(toeOffKnee - 175);
+        if (toeOffKnee < 160 && toeOffDiff > biggestDeficit) {
+            biggestDeficit = toeOffDiff;
+            worstIssue = {
+                top_fix: "Fully extend your jumping leg at takeoff.",
+                why: `Your takeoff leg only reached ${toeOffKnee}° of extension. You left the ground too early and lost massive power.`,
+                drill: "Bounding drills focusing on pushing completely through the ankle and knee."
             };
         }
-    } else if (worstPhase === "toe_off") {
+        
+        const driveKnee = metrics.toe_off.drive_knee_angle || 0;
+        if (driveKnee > 130 && Math.abs(driveKnee - 90) > biggestDeficit) {
+            biggestDeficit = Math.abs(driveKnee - 90);
+            worstIssue = {
+                top_fix: "Punch your free knee harder at takeoff.",
+                why: `Your swing leg hung straight at ${driveKnee}° instead of driving up to lift your body into the air.`,
+                drill: "High-knee bounding and step-ups onto a plyo box."
+            };
+        }
+    }
+
+    // 4. Flight Rotation (Ideal ~0-15 degrees)
+    if (metrics.flight && metrics.flight.torso_angle !== undefined) {
+        const flightTorso = metrics.flight.torso_angle;
+        const flightTorsoDiff = Math.abs(flightTorso - 0);
+        if (flightTorso > 30 && flightTorsoDiff > biggestDeficit) {
+            biggestDeficit = flightTorsoDiff;
+            worstIssue = {
+                top_fix: "Hold your chest up while in the air.",
+                why: `You rotated forward to a ${flightTorso}° torso angle too early, causing premature leg drop.`,
+                drill: "Hang technique drills off a springboard to get comfortable with air time."
+            };
+        }
+    }
+
+    // 5. Landing Posture (Ideal ~45+ degrees lean)
+    if (metrics.landing && metrics.landing.torso_angle !== undefined) {
+        const landTorso = metrics.landing.torso_angle;
+        if (landTorso < 25 && Math.abs(landTorso - 50) > biggestDeficit) {
+            biggestDeficit = Math.abs(landTorso - 50);
+            worstIssue = {
+                top_fix: "Reach forward and bring your chest over your knees on landing.",
+                why: `Your torso was upright at ${landTorso}° upon landing, causing you to sit back and lose distance in the sand.`,
+                drill: "Standing long jumps focusing exclusively on sweeping arms back and throwing legs high."
+            };
+        }
+    }
+
+    if (!worstIssue) {
         return {
-            top_fix: "Extend fully through the board on takeoff.",
-            why: "Your takeoff leg did not fully extend, meaning you left power on the runway.",
-            drill: "Bounding drills focusing on full triple extension (hip, knee, ankle)."
-        };
-    } else if (worstPhase === "penultimate") {
-        return {
-            top_fix: "Maintain your speed and lower your hips.",
-            why: "Your penultimate stride mechanics were off, which ruins the setup for the jump.",
-            drill: "Run-throughs over mini-hurdles to groove the final two steps."
-        };
-    } else if (worstPhase === "landing") {
-        return {
-            top_fix: "Reach further forward before hitting the sand.",
-            why: "You dropped your legs too early or sat back, losing valuable distance.",
-            drill: "Standing long jumps into a pit, focusing exclusively on holding legs high."
-        };
-    } else {
-        return {
-            top_fix: "Hold your form in the air.",
-            why: "Your flight posture rotated too early, killing your forward momentum.",
-            drill: "Hang technique off a springboard to get comfortable with air time."
+            top_fix: "Great jump mechanics overall!",
+            why: "Your joint angles and torso posture are within the optimal elite ranges across all phases.",
+            drill: "Continue focusing on approach speed and converting horizontal velocity."
         };
     }
+
+    return worstIssue;
 }
