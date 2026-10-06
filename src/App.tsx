@@ -1,9 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import VideoUploader from './components/VideoUploader';
 import AnalysisView from './components/AnalysisView';
 
 function App() {
   const [analysisResult, setAnalysisResult] = useState<any>(null);
+  const [isLocked, setIsLocked] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem('jump_ai_used') === 'true') {
+      setIsLocked(true);
+    }
+  }, []);
+
+  const handleUploadSuccess = (res: any) => {
+    setAnalysisResult(res);
+    localStorage.setItem('jump_ai_used', 'true');
+    setIsLocked(true);
+  };
 
   return (
     <div className="container">
@@ -21,7 +34,23 @@ function App() {
             <p className="mb-4" style={{ color: 'var(--text-muted)' }}>
               Upload a side-view video of your long jump to get instant biomechanical feedback.
             </p>
-            <VideoUploader onUploadSuccess={(res) => setAnalysisResult(res)} />
+            {isLocked ? (
+              <div className="card" style={{ maxWidth: '600px', margin: '2rem auto', textAlign: 'center', background: 'var(--card-bg)', border: '1px solid var(--accent-gold)' }}>
+                <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🔒</div>
+                <h3 style={{ fontSize: '1.8rem', color: 'var(--accent-dark)', marginBottom: '1rem' }}>Free Quota Reached</h3>
+                <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '2rem', lineHeight: '1.6' }}>
+                  You've used your free biomechanical analysis. Unlock unlimited AI tracking, 3D body overlays, and pro coaching metrics with a JUMP AI PRO subscription.
+                </p>
+                <button className="primary-btn" style={{ background: 'var(--accent-gold)', width: '100%' }}>
+                  UPGRADE TO PRO
+                </button>
+                <p style={{ marginTop: '1.5rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                  Just $9.99/mo. Cancel anytime.
+                </p>
+              </div>
+            ) : (
+              <VideoUploader onUploadSuccess={handleUploadSuccess} />
+            )}
 
             {/* Massive App Info Section */}
             <div style={{ marginTop: '6rem', textAlign: 'left', animation: 'fadeIn 1s ease' }}>
