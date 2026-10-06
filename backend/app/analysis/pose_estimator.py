@@ -48,8 +48,8 @@ class PoseEstimator:
         if total_frames <= 0:
             total_frames = 300 # fallback
         
-        # Downscale to max 720p to prevent OOM and speed up AI on small servers
-        max_dim = 720
+        # Downscale to max 480p to prevent OOM on 512MB RAM servers
+        max_dim = 480
         if max(width, height) > max_dim:
             scale = max_dim / max(width, height)
             width = int(width * scale)

@@ -39,23 +39,29 @@ class JumpAnalyzer:
         phase_detector = PhaseDetector(self.fps)
         phases = phase_detector.detect_phases(frames_data)
         
-        # Extract images for each phase robustly (sequential read to avoid MP4 seeking bugs)
+        # Extract images for each phase robustly without holding in memory
         cap = cv2.VideoCapture(annotated_video_path)
-        all_frames = []
+        required_indices = {phase_data["frame"]: phase_name for phase_name, phase_data in phases.items()}
+        
+        current_idx = 0
         while True:
             success, image = cap.read()
             if not success:
                 break
-            all_frames.append(image)
-        cap.release()
-        
-        for phase_name, phase_data in phases.items():
-            frame_idx = phase_data["frame"]
-            if frame_idx < len(all_frames):
-                image = all_frames[frame_idx]
+                
+            if current_idx in required_indices:
+                phase_name = required_indices[current_idx]
                 image_path = os.path.join(output_dir, f"{phase_name}.jpg")
                 cv2.imwrite(image_path, image)
                 phases[phase_name]["image_url"] = f"/outputs/{self.job_id}/{phase_name}.jpg"
+                del required_indices[current_idx]
+                
+                if not required_indices:
+                    break
+                    
+            current_idx += 1
+            
+        cap.release()
         
         self.update_progress(65, "Calculating biomechanics...")
         
