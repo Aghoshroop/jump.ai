@@ -115,7 +115,8 @@ export async function processVideoFile(file: File | Blob, onProgress: (progress:
                     overall_score: scoreData.overall_score,
                     phase_scores: scoreData.phase_scores,
                     coaching,
-                    original_video_url: video.src // pass to analysis view
+                    original_video_url: video.src, // pass to analysis view
+                    framesData: framesData // pass for live overlay
                 });
             } catch (err) {
                 console.error(err);

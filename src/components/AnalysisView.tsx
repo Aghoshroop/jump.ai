@@ -1,4 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
+
+const POSE_CONNECTIONS = (window as any).POSE_CONNECTIONS;
+const drawConnectors = (window as any).drawConnectors;
+const drawLandmarks = (window as any).drawLandmarks;
 
 interface Props {
   result: any;
@@ -7,6 +11,50 @@ interface Props {
 
 const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+      if (!result?.framesData || !videoRef.current || !canvasRef.current) return;
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      let animationId: number;
+
+      const render = () => {
+          if (canvas.width !== video.videoWidth && video.videoWidth > 0) {
+              canvas.width = video.videoWidth;
+              canvas.height = video.videoHeight;
+          }
+
+          const currentTime = video.currentTime;
+          const frames = result.framesData;
+          let closestFrame = frames[0];
+          let minDiff = Infinity;
+          
+          for (let i = 0; i < frames.length; i++) {
+              const diff = Math.abs(frames[i].timestamp - currentTime);
+              if (diff < minDiff) {
+                  minDiff = diff;
+                  closestFrame = frames[i];
+              }
+          }
+
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          if (closestFrame && closestFrame.landmarks && minDiff < 0.1) {
+              drawConnectors(ctx, closestFrame.landmarks, POSE_CONNECTIONS, { color: '#00FF00', lineWidth: 6 });
+              drawLandmarks(ctx, closestFrame.landmarks, { color: '#FF0000', lineWidth: 4, radius: 4 });
+          }
+          
+          animationId = requestAnimationFrame(render);
+      };
+      
+      render();
+
+      return () => cancelAnimationFrame(animationId);
+  }, [result]);
 
   if (!result) {
       return null;
@@ -21,7 +69,7 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
             ← Analyze Another Jump
         </button>
       </div>
-      <div className="video-container">
+      <div className="video-container" style={{ position: 'relative' }}>
         <video 
             ref={(el) => {
                 if (el) el.playbackRate = 0.25; // SLOW MOTION
@@ -34,6 +82,11 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
             autoPlay
             loop
             crossOrigin="anonymous"
+            style={{ width: '100%', display: 'block' }}
+        />
+        <canvas 
+            ref={canvasRef} 
+            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }} 
         />
       </div>
 
