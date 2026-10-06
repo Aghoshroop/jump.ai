@@ -42,31 +42,36 @@ export async function processVideoFile(file: File | Blob, onProgress: (progress:
                 onProgress(10 + Math.floor(percent * 0.7), `Tracking anatomy (${percent}%)...`);
             });
 
-            // Process video frame by frame
-            // We use requestVideoFrameCallback if available, or fallback to setInterval
-            
-            video.play();
-            
-            if ('requestVideoFrameCallback' in video) {
-                const processFrame = async () => {
+            await pose.initialize();
+
+            let currentTime = 0;
+            const duration = video.duration;
+            const step = 1 / 30; // 30 FPS
+
+            const processNextFrame = () => {
+                if (currentTime >= duration) {
+                    finishAnalysis();
+                    return;
+                }
+                video.currentTime = currentTime;
+            };
+
+            video.onseeked = async () => {
+                try {
                     await pose.send({ image: video });
-                    if (!video.ended && !video.paused) {
-                        (video as any).requestVideoFrameCallback(processFrame);
-                    }
-                };
-                (video as any).requestVideoFrameCallback(processFrame);
-            } else {
-                const interval = window.setInterval(async () => {
-                    if ((video as any).ended || (video as any).paused) {
-                        clearInterval(interval);
-                        return;
-                    }
-                    await pose.send({ image: video });
-                }, 33);
-            }
+                    currentTime += step;
+                    processNextFrame();
+                } catch (e) {
+                    console.error("Pose processing error:", e);
+                    currentTime += step;
+                    processNextFrame();
+                }
+            };
+
+            processNextFrame();
         };
         
-        video.onended = async () => {
+        const finishAnalysis = async () => {
             onProgress(85, 'Analyzing jump mechanics...');
             
             try {
@@ -89,17 +94,19 @@ export async function processVideoFile(file: File | Blob, onProgress: (progress:
                 const ctx = canvas.getContext('2d');
                 
                 for (const phase in phases) {
-                    const ts = (phases as any)[phase].timestamp;
-                    video.currentTime = ts;
-                    await new Promise(r => {
-                        video.onseeked = () => {
-                            if (ctx) {
-                                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                                (phases as any)[phase].image_url = canvas.toDataURL('image/jpeg', 0.7);
-                            }
-                            r(null);
-                        };
-                    });
+                    const phaseData = (phases as any)[phase];
+                    if (phaseData && phaseData.timestamp !== undefined) {
+                        video.currentTime = phaseData.timestamp;
+                        await new Promise(r => {
+                            video.onseeked = () => {
+                                if (ctx) {
+                                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                                    phaseData.image_url = canvas.toDataURL('image/jpeg', 0.7);
+                                }
+                                r(null);
+                            };
+                        });
+                    }
                 }
                 
                 resolve({
