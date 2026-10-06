@@ -1,7 +1,5 @@
 import React, { useState, useRef, type DragEvent } from 'react';
-import type * as mpPose from '@mediapipe/pose';
 import type * as mpCam from '@mediapipe/camera_utils';
-import type * as mpDraw from '@mediapipe/drawing_utils';
 
 const Pose = (window as any).Pose;
 const POSE_CONNECTIONS = (window as any).POSE_CONNECTIONS;
@@ -108,7 +106,7 @@ const VideoUploader: React.FC<Props> = ({ onUploadSuccess }) => {
 
             // Set up MediaPipe
             const pose = new Pose({
-                locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`,
+                locateFile: (file: any) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`,
             });
             
             pose.setOptions({
@@ -118,7 +116,7 @@ const VideoUploader: React.FC<Props> = ({ onUploadSuccess }) => {
                 minTrackingConfidence: 0.5
             });
 
-            pose.onResults((results) => {
+            pose.onResults((results: any) => {
                 if (!canvasRef.current || !liveVideoRef.current) return;
                 const canvasCtx = canvasRef.current.getContext('2d');
                 if (!canvasCtx) return;
