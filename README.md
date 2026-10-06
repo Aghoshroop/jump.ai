@@ -1,62 +1,32 @@
----
-title: Jump AI
-emoji: 🏃
-colorFrom: blue
-colorTo: green
-sdk: docker
-app_port: 8000
----
+# React + TypeScript + Vite
 
-# Jump AI
+This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
-AI-powered long jump technique analysis application.
+Currently, two official plugins are available:
 
-## Prerequisites
-- Node.js 18+
-- Python 3.9+
-- A side-view long jump video
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## Installation
+## React Compiler
 
-### 1. Backend (Python)
-Navigate to the `backend` directory:
-```bash
-cd backend
-pip install -r requirements.txt
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+
+## Expanding the Oxlint configuration
+
+If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+
+```json
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript", "oxc"],
+  "options": {
+    "typeAware": true
+  },
+  "rules": {
+    "react/rules-of-hooks": "error",
+    "react/only-export-components": ["warn", { "allowConstantExport": true }]
+  }
+}
 ```
 
-### 2. Frontend (React)
-Navigate to the `frontend` directory:
-```bash
-cd frontend
-npm install
-```
-
-## Running the Application
-
-### 1. Start the Backend API
-In the `backend` directory:
-```bash
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-```
-
-### 2. Start the Frontend
-In the `frontend` directory:
-```bash
-npm run dev
-```
-
-The application will be available at `http://localhost:5173`.
-
-## Architecture
-- **Frontend**: React + TypeScript + Vite. Vanilla CSS.
-- **Backend**: FastAPI + Python.
-- **Pose Estimation**: MediaPipe Pose Landmarker.
-- **Biomechanics**: Custom calculations for joint angles and posture.
-- **Scoring**: Rule-based deterministic scoring engine.
-
-## Note on Video Processing
-Videos are uploaded to `backend/uploads`. Extracted frames and coordinates are stored in `backend/outputs`.
-
-## Demo Mode
-Not implemented in MVP, but can be added in future iterations by placing a sample video in uploads and serving preset JSON results.
+See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.

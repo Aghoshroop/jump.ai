@@ -3,25 +3,25 @@ import VideoUploader from './components/VideoUploader';
 import AnalysisView from './components/AnalysisView';
 
 function App() {
-  const [jobId, setJobId] = useState<string | null>(null);
+  const [analysisResult, setAnalysisResult] = useState<any>(null);
 
   return (
     <div className="container">
       <header className="header">
         <h1 className="header-title">JUMP AI</h1>
         <nav>
-          <button className="secondary-btn" onClick={() => setJobId(null)}>Home</button>
+          <button className="secondary-btn" onClick={() => setAnalysisResult(null)}>Home</button>
         </nav>
       </header>
 
       <main>
-        {!jobId ? (
+        {!analysisResult ? (
           <div className="text-center mt-4">
             <h2>AI-powered long jump technique analysis</h2>
             <p className="mb-4" style={{ color: 'var(--text-muted)' }}>
               Upload a side-view video of your long jump to get instant biomechanical feedback.
             </p>
-            <VideoUploader onUploadSuccess={(id) => setJobId(id)} />
+            <VideoUploader onUploadSuccess={(res) => setAnalysisResult(res)} />
 
             {/* Massive App Info Section */}
             <div style={{ marginTop: '6rem', textAlign: 'left', animation: 'fadeIn 1s ease' }}>
@@ -68,7 +68,7 @@ function App() {
             </div>
           </div>
         ) : (
-          <AnalysisView jobId={jobId} onBack={() => setJobId(null)} />
+          <AnalysisView result={analysisResult} onBack={() => setAnalysisResult(null)} />
         )}
       </main>
     </div>

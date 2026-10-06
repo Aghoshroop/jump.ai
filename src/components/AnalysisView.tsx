@@ -1,81 +1,26 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useRef } from 'react';
 
 interface Props {
-  jobId: string;
+  result: any;
   onBack: () => void;
 }
 
-const AnalysisView: React.FC<Props> = ({ jobId, onBack }) => {
-  const [status, setStatus] = useState<any>(null);
-  const [result, setResult] = useState<any>(null);
+const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    const checkStatus = async () => {
-      try {
-        const res = await fetch(`/api/jumps/${jobId}/status`);
-        const data = await res.json();
-        setStatus(data);
-
-        if (data.status === 'COMPLETED') {
-          const res2 = await fetch(`/api/jumps/${jobId}/result`);
-          const resultData = await res2.json();
-          setResult(resultData);
-          
-          if (resultData.frames_data_path) {
-              // Frames data fetch removed since it's not used in this view
-          }
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    if (!result) {
-      const interval = setInterval(checkStatus, 1000);
-      return () => clearInterval(interval);
-    }
-  }, [jobId, result]);
-  
-
   if (!result) {
-    if (status?.status === 'FAILED') {
-      return (
-        <div className="card text-center" style={{ maxWidth: '600px', margin: '4rem auto', border: '1px solid #ff4444' }}>
-          <h2 style={{ color: '#ff4444', marginBottom: '1.5rem' }}>Analysis Failed</h2>
-          <div style={{ background: 'rgba(255, 68, 68, 0.1)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem' }}>
-            <p style={{ fontSize: '1.1rem', color: '#ffaaaa', margin: 0 }}>
-              {status.error || 'An unknown error occurred during video analysis.'}
-            </p>
-          </div>
-          <button className="primary-btn" onClick={onBack} style={{ background: 'linear-gradient(90deg, #ff4444, #cc0000)' }}>
-            Try Another Video
-          </button>
-        </div>
-      );
-    }
-
-    return (
-      <div className="card text-center" style={{ maxWidth: '600px', margin: '4rem auto' }}>
-        <h2 style={{ color: 'var(--accent-gold)' }}>Analyzing Jump...</h2>
-        <div className="mt-4">
-          <p style={{ fontSize: '1.2rem', fontWeight: 600 }}>{status?.status || 'INITIALIZING'}</p>
-          <div style={{ width: '100%', height: '12px', background: 'rgba(0,0,0,0.5)', borderRadius: '6px', margin: '1.5rem 0', overflow: 'hidden', border: '1px solid var(--border-color)' }}>
-            <div style={{ width: `${status?.progress || 0}%`, height: '100%', background: 'linear-gradient(90deg, var(--accent-gold), var(--accent-orange))', transition: 'width 0.4s ease-out', boxShadow: '0 0 10px var(--accent-orange-glow)' }}></div>
-          </div>
-          <p style={{ color: 'var(--text-muted)' }}>{status?.message || 'Warming up AI engines...'}</p>
-        </div>
-      </div>
-    );
+      return null;
   }
 
-  // Use annotated video if available, otherwise fallback to the uploaded video
-  const videoSrc = result.annotated_video_path 
-    ? `${result.annotated_video_path}` 
-    : `/uploads/${jobId}_video.mp4`;
+  const videoSrc = result.original_video_url;
 
   return (
     <div style={{ animation: 'fadeIn 0.5s ease' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
+        <button className="primary-btn" onClick={onBack} style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid var(--border-color)' }}>
+            ← Analyze Another Jump
+        </button>
+      </div>
       <div className="video-container">
         <video 
             ref={(el) => {

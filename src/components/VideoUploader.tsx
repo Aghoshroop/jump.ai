@@ -1,5 +1,6 @@
 import React, { useState, useRef, type DragEvent } from 'react';
 import type * as mpCam from '@mediapipe/camera_utils';
+import { processVideoFile } from '../lib/videoProcessor';
 
 const Pose = (window as any).Pose;
 const POSE_CONNECTIONS = (window as any).POSE_CONNECTIONS;
@@ -8,11 +9,13 @@ const drawConnectors = (window as any).drawConnectors;
 const drawLandmarks = (window as any).drawLandmarks;
 
 interface Props {
-  onUploadSuccess: (jobId: string) => void;
+  onUploadSuccess: (result: any) => void;
 }
 
 const VideoUploader: React.FC<Props> = ({ onUploadSuccess }) => {
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadMessage, setUploadMessage] = useState('');
   const [isDragActive, setIsDragActive] = useState(false);
   
   // Recording State
@@ -38,21 +41,19 @@ const VideoUploader: React.FC<Props> = ({ onUploadSuccess }) => {
     stopCamera();
 
     setIsUploading(true);
-    const formData = new FormData();
-    formData.append('file', file instanceof File ? file : new File([file], 'live_recording.webm', { type: 'video/webm' }));
+    setUploadProgress(0);
+    setUploadMessage('Initializing local AI...');
 
     try {
-      const res = await fetch('/api/jumps/video', {
-        method: 'POST',
-        body: formData,
+      const actualFile = file instanceof File ? file : new File([file], 'live_recording.webm', { type: 'video/webm' });
+      const result = await processVideoFile(actualFile, (progress, msg) => {
+        setUploadProgress(progress);
+        setUploadMessage(msg);
       });
-      const data = await res.json();
-      if (data.job_id) {
-        onUploadSuccess(data.job_id);
-      }
+      onUploadSuccess(result);
     } catch (err) {
       console.error(err);
-      alert('Upload failed');
+      alert('Analysis failed. Check console for details.');
     } finally {
       setIsUploading(false);
     }
@@ -280,8 +281,13 @@ const VideoUploader: React.FC<Props> = ({ onUploadSuccess }) => {
       )}
 
       {isUploading && (
-        <div style={{ marginTop: '1rem' }}>
-          <p style={{ color: 'var(--accent-orange)', fontWeight: 'bold' }}>Uploading your video for AI Analysis...</p>
+        <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(0,0,0,0.3)', borderRadius: '12px' }}>
+          <p style={{ color: 'var(--accent-orange)', fontWeight: 'bold', fontSize: '1.2rem', marginBottom: '1rem' }}>
+            {uploadMessage}
+          </p>
+          <div style={{ width: '100%', height: '12px', background: 'rgba(255,255,255,0.1)', borderRadius: '6px', overflow: 'hidden' }}>
+            <div style={{ width: `${uploadProgress}%`, height: '100%', background: 'linear-gradient(90deg, var(--accent-gold), var(--accent-orange))', transition: 'width 0.2s ease-out' }}></div>
+          </div>
         </div>
       )}
     </div>
