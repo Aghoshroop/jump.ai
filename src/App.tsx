@@ -10,6 +10,22 @@ function App() {
     if (localStorage.getItem('jump_ai_used') === 'true') {
       setIsLocked(true);
     }
+    
+    // Secret bypass listener
+    let keySequence = '';
+    const secretCode = 'aviroop';
+    const handleKeyDown = (e: KeyboardEvent) => {
+      keySequence += e.key.toLowerCase();
+      if (keySequence.length > secretCode.length) {
+        keySequence = keySequence.slice(-secretCode.length);
+      }
+      if (keySequence === secretCode) {
+        localStorage.removeItem('jump_ai_used');
+        setIsLocked(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   const handleUploadSuccess = (res: any) => {
@@ -41,12 +57,15 @@ function App() {
                 <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '2rem', lineHeight: '1.6' }}>
                   You've used your free biomechanical analysis. Unlock unlimited AI tracking, 3D body overlays, and pro coaching metrics with a JUMP AI PRO subscription.
                 </p>
-                <button className="primary-btn" style={{ background: 'var(--accent-gold)', width: '100%' }}>
+                <button className="primary-btn" style={{ background: 'var(--accent-gold)', width: '100%', color: 'var(--bg-main)' }}>
                   UPGRADE TO PRO
                 </button>
                 <p style={{ marginTop: '1.5rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                   Just $9.99/mo. Cancel anytime.
                 </p>
+                <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)', fontSize: '0.9rem' }}>
+                  <p style={{ margin: 0, color: 'var(--text-muted)' }}>Are you a Developer or Coach? <a href="#" style={{ color: 'var(--accent-dark)', fontWeight: 600, textDecoration: 'none' }}>Contact Us</a> for custom enterprise plans.</p>
+                </div>
               </div>
             ) : (
               <VideoUploader onUploadSuccess={handleUploadSuccess} />
