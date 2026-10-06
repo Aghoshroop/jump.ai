@@ -55,14 +55,15 @@ class PoseEstimator:
             width = int(width * scale)
             height = int(height * scale)
         
+        actual_output_path = output_video_path
         out = None
         if output_video_path:
-            # Use avc1 for better web compatibility, fallback to mp4v
-            fourcc = cv2.VideoWriter_fourcc(*'avc1')
+            fourcc = cv2.VideoWriter_fourcc(*'vp80')
             out = cv2.VideoWriter(output_video_path, fourcc, self.fps, (width, height))
             if not out.isOpened():
-                fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-                out = cv2.VideoWriter(output_video_path, fourcc, self.fps, (width, height))
+                actual_output_path = output_video_path.replace('.webm', '.mp4')
+                fourcc = cv2.VideoWriter_fourcc(*'avc1')
+                out = cv2.VideoWriter(actual_output_path, fourcc, self.fps, (width, height))
 
         frames_data = []
         frame_idx = 0
@@ -146,7 +147,7 @@ class PoseEstimator:
         if out is not None:
             out.release()
             
-        return self._smooth_landmarks(frames_data)
+        return self._smooth_landmarks(frames_data), actual_output_path
 
     def _smooth_landmarks(self, frames_data, alpha=0.5):
         smoothed = []

@@ -22,12 +22,12 @@ class JumpAnalyzer:
         
         # 1. Pose Estimation
         estimator = PoseEstimator()
-        annotated_video_path = os.path.join(output_dir, "annotated.mp4")
+        annotated_video_path = os.path.join(output_dir, "annotated.webm")
         
         def pose_progress(p):
             self.update_progress(15 + int(p * 30), f"Analyzing motion ({int(p*100)}%)...")
             
-        frames_data = estimator.process_video(self.video_path, annotated_video_path, progress_callback=pose_progress)
+        frames_data, final_video_path = estimator.process_video(self.video_path, annotated_video_path, progress_callback=pose_progress)
         if not frames_data:
             raise ValueError("Could not process video or find athlete.")
             
@@ -40,7 +40,7 @@ class JumpAnalyzer:
         phases = phase_detector.detect_phases(frames_data)
         
         # Extract images for each phase robustly without holding in memory
-        cap = cv2.VideoCapture(annotated_video_path)
+        cap = cv2.VideoCapture(final_video_path)
         required_indices = {phase_data["frame"]: phase_name for phase_name, phase_data in phases.items()}
         
         current_idx = 0
@@ -91,7 +91,7 @@ class JumpAnalyzer:
             "phase_scores": score_data["phase_scores"],
             "coaching": coaching,
             "frames_data_path": f"/outputs/{self.job_id}/frames.json",
-            "annotated_video_path": f"/outputs/{self.job_id}/annotated.mp4"
+            "annotated_video_path": f"/outputs/{self.job_id}/{os.path.basename(final_video_path)}"
         }
         
         with open(os.path.join(output_dir, "frames.json"), "w") as f:

@@ -51,9 +51,11 @@ class PhaseDetector:
         leg_ext_y = [get_lowest_foot_y(f) - get_hip(f)["y"] for f in valid_frames]
         # Horizontal distance from hip to furthest foot (high during strides/landing)
         stride_x = [get_furthest_foot_x(f) for f in valid_frames]
+        # Hip vertical position (low Y = high in the air)
+        hip_y = [get_hip(f)["y"] for f in valid_frames]
         
         # Smooth arrays
-        def smooth_array(arr, window=3):
+        def smooth_array(arr, window=5):
             smoothed = []
             for i in range(len(arr)):
                 start = max(0, i - window // 2)
@@ -61,29 +63,28 @@ class PhaseDetector:
                 smoothed.append(sum(arr[start:end]) / (end - start))
             return smoothed
             
-        leg_ext_y = smooth_array(leg_ext_y, window=3)
-        stride_x = smooth_array(stride_x, window=3)
+        leg_ext_y = smooth_array(leg_ext_y, window=5)
+        stride_x = smooth_array(stride_x, window=5)
+        hip_y = smooth_array(hip_y, window=5)
         
         # 2. Find True Flight Apex
-        # Flight is characterized by the athlete tucking their legs or extending them forward. 
-        # Leg extension in Y will hit an absolute minimum during the flight phase.
-        # We restrict the search to the middle 60% of the video to avoid start/end anomalies.
+        # Flight apex is when the athlete is highest in the air (minimum Y coordinate for the hip)
         search_start = int(n * 0.2)
         search_end = int(n * 0.8)
         
         apex_idx = search_start
-        min_ext_y = float('inf')
+        min_hip_y = float('inf')
         for i in range(search_start, search_end):
-            if leg_ext_y[i] < min_ext_y:
-                min_ext_y = leg_ext_y[i]
+            if hip_y[i] < min_hip_y:
+                min_hip_y = hip_y[i]
                 apex_idx = i
                 
         # 3. Find Toe-Off
         # Toe-off happens right before flight. It's the moment of maximum leg extension (pushing off).
         toe_off_idx = apex_idx
         max_ext_y = -1
-        # Search backwards from apex for the maximum leg extension
-        for i in range(apex_idx - 1, max(0, apex_idx - int(self.fps * 1.0)), -1):
+        # Search backwards from apex for up to 2 seconds
+        for i in range(apex_idx - 1, max(0, apex_idx - int(self.fps * 2.0)), -1):
             if leg_ext_y[i] > max_ext_y:
                 max_ext_y = leg_ext_y[i]
                 toe_off_idx = i
