@@ -28,6 +28,7 @@ export function detectPhases(framesData: FrameData[], fps: number) {
     };
     
     const legExtYRaw = validFrames.map(f => getLowestFootY(f) - getHip(f).y);
+    const strideXRaw = validFrames.map(f => Math.abs(f.landmarks![27].x - f.landmarks![28].x));
     const hipYRaw = validFrames.map(f => getHip(f).y);
     
     const smoothArray = (arr: number[], windowSize = 7) => {
@@ -43,6 +44,7 @@ export function detectPhases(framesData: FrameData[], fps: number) {
     };
     
     const legExtY = smoothArray(legExtYRaw, 7);
+    const strideX = smoothArray(strideXRaw, 7);
     const hipY = smoothArray(hipYRaw, 7);
     
     // 1. Flight Apex (Highest point in air -> Minimum hip Y)
@@ -58,40 +60,35 @@ export function detectPhases(framesData: FrameData[], fps: number) {
         }
     }
     
-    // 2. Toe Off (Last local maximum of leg extension before apex)
+    // 2. Toe Off (Last local maximum of Stride X before apex - feet furthest apart)
     let toeOffIdx = apexIdx;
     for (let i = apexIdx - 1; i >= Math.floor(n * 0.05); i--) {
-        if (legExtY[i] > legExtY[i-1] && legExtY[i] > legExtY[i+1]) {
+        if (strideX[i] > strideX[i-1] && strideX[i] > strideX[i+1]) {
             toeOffIdx = i;
             break;
         }
     }
-    if (toeOffIdx === apexIdx) {
-        let maxExt = -1;
-        for(let i = apexIdx; i >= 0; i--) {
-            if (legExtY[i] > maxExt) { maxExt = legExtY[i]; toeOffIdx = i; }
-        }
-    }
+    if (toeOffIdx === apexIdx) toeOffIdx = Math.max(0, apexIdx - Math.floor(fps * 0.15));
 
-    // 3. Plant (Last local minimum of leg extension before toe off, indicating knee bend during strike)
+    // 3. Plant (Last local minimum of Stride X before toe off - ankles crossing during mid-stance)
     let plantIdx = toeOffIdx;
     for (let i = toeOffIdx - 2; i >= Math.floor(n * 0.02); i--) {
-        if (legExtY[i] < legExtY[i-1] && legExtY[i] < legExtY[i+1]) {
+        if (strideX[i] < strideX[i-1] && strideX[i] < strideX[i+1]) {
             plantIdx = i;
             break;
         }
     }
-    if (plantIdx === toeOffIdx) plantIdx = Math.max(0, toeOffIdx - 10);
+    if (plantIdx === toeOffIdx) plantIdx = Math.max(0, toeOffIdx - Math.floor(fps * 0.1));
 
-    // 4. Penultimate (Last local minimum of leg extension before Plant)
+    // 4. Penultimate (Last local minimum of Stride X before Plant - previous step's mid-stance)
     let penultimateIdx = plantIdx;
     for (let i = plantIdx - 2; i >= 1; i--) {
-        if (legExtY[i] < legExtY[i-1] && legExtY[i] < legExtY[i+1]) {
+        if (strideX[i] < strideX[i-1] && strideX[i] < strideX[i+1]) {
             penultimateIdx = i;
             break;
         }
     }
-    if (penultimateIdx === plantIdx) penultimateIdx = Math.max(0, plantIdx - 10);
+    if (penultimateIdx === plantIdx) penultimateIdx = Math.max(0, plantIdx - Math.floor(fps * 0.25));
     
     // 5. Landing (First local maximum of hip Y after apex, indicating dropping into the sand)
     let landingIdx = apexIdx;
