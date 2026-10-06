@@ -12,6 +12,17 @@ interface Props {
 const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const toggleFullscreen = () => {
+      if (!document.fullscreenElement) {
+          containerRef.current?.requestFullscreen().catch(err => {
+              console.log(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+          });
+      } else {
+          document.exitFullscreen();
+      }
+  };
 
   useEffect(() => {
       if (!result?.framesData || !videoRef.current || !canvasRef.current) return;
@@ -69,7 +80,13 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
             ← Analyze Another Jump
         </button>
       </div>
-      <div className="video-container" style={{ position: 'relative' }}>
+      <div className="video-container" style={{ position: 'relative' }} ref={containerRef}>
+        <button className="fullscreen-btn" onClick={toggleFullscreen}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+            </svg>
+            Enlarge AI Video
+        </button>
         <video 
             ref={(el) => {
                 if (el) el.playbackRate = 0.25; // SLOW MOTION
