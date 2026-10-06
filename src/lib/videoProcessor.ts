@@ -1,6 +1,9 @@
 import { detectPhases, calculateBiomechanics, scoreJump, generateCoaching, type FrameData } from './jumpLogic';
 
 const Pose = (window as any).Pose;
+const POSE_CONNECTIONS = (window as any).POSE_CONNECTIONS;
+const drawConnectors = (window as any).drawConnectors;
+const drawLandmarks = (window as any).drawLandmarks;
 
 export async function processVideoFile(file: File | Blob, onProgress: (progress: number, message: string) => void): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -101,6 +104,23 @@ export async function processVideoFile(file: File | Blob, onProgress: (progress:
                             video.onseeked = () => {
                                 if (ctx) {
                                     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                                    
+                                    // Draw the tracking pipeline skeleton on the phase image
+                                    let closestFrame = framesData[0];
+                                    let minDiff = Infinity;
+                                    for (let i = 0; i < framesData.length; i++) {
+                                        const diff = Math.abs(framesData[i].timestamp - phaseData.timestamp);
+                                        if (diff < minDiff) {
+                                            minDiff = diff;
+                                            closestFrame = framesData[i];
+                                        }
+                                    }
+                                    
+                                    if (closestFrame && closestFrame.landmarks && minDiff < 0.1) {
+                                        drawConnectors(ctx, closestFrame.landmarks, POSE_CONNECTIONS, { color: '#00FF00', lineWidth: 4 });
+                                        drawLandmarks(ctx, closestFrame.landmarks, { color: '#FF0000', lineWidth: 2, radius: 3 });
+                                    }
+                                    
                                     phaseData.image_url = canvas.toDataURL('image/jpeg', 0.7);
                                 }
                                 r(null);
