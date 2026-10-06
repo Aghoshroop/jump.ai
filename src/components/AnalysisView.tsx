@@ -76,7 +76,7 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
   return (
     <div style={{ animation: 'fadeIn 0.5s ease' }}>
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
-        <button className="primary-btn" onClick={onBack} style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid var(--border-color)' }}>
+        <button className="secondary-btn" onClick={onBack}>
             ← Analyze Another Jump
         </button>
       </div>
@@ -120,8 +120,8 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
                     <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
                         <div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                                <h4 style={{ color: 'var(--accent-gold)', margin: 0, fontSize: '1.2rem' }}>{phaseName}</h4>
-                                <span style={{ background: 'rgba(247, 197, 72, 0.15)', color: 'var(--accent-gold)', padding: '4px 10px', borderRadius: '20px', fontWeight: 'bold' }}>
+                                <h4 style={{ color: 'var(--accent-dark)', margin: 0, fontSize: '1.2rem' }}>{phaseName}</h4>
+                                <span style={{ background: 'rgba(194, 168, 120, 0.15)', color: 'var(--accent-gold)', padding: '4px 10px', borderRadius: '20px', fontWeight: 'bold' }}>
                                     {result.phase_scores?.[phaseName] || 'N/A'}
                                 </span>
                             </div>
@@ -129,7 +129,7 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
                             {result.metrics?.[phaseName] && (
                                 <div className="mt-4" style={{ fontSize: '0.95rem', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                                     {Object.entries(result.metrics[phaseName]).map(([mName, mVal]: [string, any]) => (
-                                        <div key={mName} style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem' }}>
+                                        <div key={mName} style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
                                             <span style={{ textTransform: 'capitalize' }}>{mName.replace(/_/g, ' ')}</span>
                                             <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>{mVal}</span>
                                         </div>
@@ -161,16 +161,16 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
             </div>
             
             {result.coaching && (
-                <div className="card" style={{ flex: '2 1 300px', maxWidth: '100%', background: 'linear-gradient(145deg, rgba(255, 107, 53, 0.1), transparent)', boxSizing: 'border-box', overflow: 'hidden' }}>
+                <div className="card" style={{ flex: '2 1 300px', maxWidth: '100%', background: 'rgba(255,255,255,0.5)', boxSizing: 'border-box', overflow: 'hidden' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent-orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                             <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                         </svg>
-                        <h3 style={{ margin: 0, color: 'var(--accent-orange)' }}>TOP FIX</h3>
+                        <h3 style={{ margin: 0, color: 'var(--accent-dark)' }}>TOP FIX</h3>
                     </div>
-                    <p style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '1rem', lineHeight: 1.3, wordWrap: 'break-word' }}>"{result.coaching.top_fix}"</p>
+                    <p style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '1rem', lineHeight: 1.3, wordWrap: 'break-word', color: 'var(--accent-dark)' }}>"{result.coaching.top_fix}"</p>
                     <p className="mt-2" style={{ color: 'var(--text-muted)', fontSize: '1.1rem', lineHeight: 1.6, wordWrap: 'break-word' }}><strong>Why:</strong> {result.coaching.why}</p>
-                    <div className="mt-4" style={{ background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid var(--accent-gold)', wordWrap: 'break-word' }}>
+                    <div className="mt-4" style={{ background: 'rgba(0,0,0,0.03)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid var(--accent-gold)', wordWrap: 'break-word' }}>
                         <p style={{ margin: 0 }}><strong>Try this drill:</strong> {result.coaching.drill}</p>
                     </div>
                 </div>
