@@ -38,12 +38,22 @@ class PoseEstimator:
         self.detector = vision.PoseLandmarker.create_from_options(options)
         self.fps = 30
         
-    def process_video(self, video_path, output_video_path=None):
+    def process_video(self, video_path, output_video_path=None, progress_callback=None):
         cap = cv2.VideoCapture(video_path)
         self.fps = cap.get(cv2.CAP_PROP_FPS) or 30
         
         width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        if total_frames <= 0:
+            total_frames = 300 # fallback
+        
+        # Downscale to max 720p to prevent OOM and speed up AI on small servers
+        max_dim = 720
+        if max(width, height) > max_dim:
+            scale = max_dim / max(width, height)
+            width = int(width * scale)
+            height = int(height * scale)
         
         out = None
         if output_video_path:
@@ -75,6 +85,9 @@ class PoseEstimator:
             timestamp_ms = int(cap.get(cv2.CAP_PROP_POS_MSEC))
             if timestamp_ms < 0:
                 timestamp_ms = int(frame_idx * 1000 / self.fps)
+
+            # Resize image to match output video width/height
+            image = cv2.resize(image, (width, height))
 
             image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=image_rgb)
@@ -126,6 +139,8 @@ class PoseEstimator:
                 out.write(image)
                 
             frame_idx += 1
+            if progress_callback and frame_idx % 10 == 0:
+                progress_callback(min(frame_idx / total_frames, 0.99))
             
         cap.release()
         if out is not None:

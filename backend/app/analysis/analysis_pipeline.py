@@ -23,7 +23,11 @@ class JumpAnalyzer:
         # 1. Pose Estimation
         estimator = PoseEstimator()
         annotated_video_path = os.path.join(output_dir, "annotated.mp4")
-        frames_data = estimator.process_video(self.video_path, annotated_video_path)
+        
+        def pose_progress(p):
+            self.update_progress(15 + int(p * 30), f"Analyzing motion ({int(p*100)}%)...")
+            
+        frames_data = estimator.process_video(self.video_path, annotated_video_path, progress_callback=pose_progress)
         if not frames_data:
             raise ValueError("Could not process video or find athlete.")
             
