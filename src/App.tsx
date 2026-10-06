@@ -51,20 +51,20 @@ function App() {
               Upload a side-view video of your long jump to get instant biomechanical feedback.
             </p>
             {isLocked ? (
-              <div className="card" style={{ maxWidth: '600px', margin: '2rem auto', textAlign: 'center', background: 'var(--card-bg)', border: '1px solid var(--accent-gold)' }}>
+              <div className="card" style={{ maxWidth: '600px', margin: '2rem auto', textAlign: 'center' }}>
                 <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🔒</div>
-                <h3 style={{ fontSize: '1.8rem', color: 'var(--accent-dark)', marginBottom: '1rem' }}>Free Quota Reached</h3>
-                <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '2rem', lineHeight: '1.6' }}>
+                <h3 style={{ fontSize: '1.8rem', color: 'var(--espresso)', marginBottom: '1rem' }}>Free Quota Reached</h3>
+                <p style={{ color: 'var(--text-body)', fontSize: '1.1rem', marginBottom: '2rem', lineHeight: '1.6' }}>
                   You've used your free biomechanical analysis. Unlock unlimited AI tracking, 3D body overlays, and pro coaching metrics with a JUMP AI PRO subscription.
                 </p>
-                <button className="primary-btn" style={{ background: 'var(--accent-gold)', width: '100%', color: 'var(--bg-main)' }}>
+                <button className="primary-btn" style={{ width: '100%' }}>
                   UPGRADE TO PRO
                 </button>
-                <p style={{ marginTop: '1.5rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                <p style={{ marginTop: '1.5rem', fontSize: '0.85rem', color: 'var(--text-body)' }}>
                   Just $9.99/mo. Cancel anytime.
                 </p>
-                <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)', fontSize: '0.9rem' }}>
-                  <p style={{ margin: 0, color: 'var(--text-muted)' }}>Are you a Developer or Coach? <a href="#" style={{ color: 'var(--accent-dark)', fontWeight: 600, textDecoration: 'none' }}>Contact Us</a> for custom enterprise plans.</p>
+                <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(24,21,18,0.1)', fontSize: '0.9rem' }}>
+                  <p style={{ margin: 0, color: 'var(--text-body)' }}>Are you a Developer or Coach? <a href="#" style={{ color: 'var(--espresso)', fontWeight: 600, textDecoration: 'none' }}>Contact Us</a> for custom enterprise plans.</p>
                 </div>
               </div>
             ) : (
@@ -72,45 +72,45 @@ function App() {
             )}
 
             {/* Massive App Info Section */}
-            <div style={{ marginTop: '6rem', textAlign: 'left', animation: 'fadeIn 1s ease' }}>
-              <h2 style={{ fontSize: '3rem', textAlign: 'center', marginBottom: '1rem', color: 'var(--accent-dark)' }}>INSIDE <span style={{ color: 'var(--accent-gold)' }}>JUMP AI</span></h2>
-              <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '1.2rem', maxWidth: '800px', margin: '0 auto 4rem', lineHeight: 1.6 }}>
+            <div style={{ marginTop: '8rem', textAlign: 'left', animation: 'fadeIn 1s ease' }}>
+              <h2 style={{ fontSize: '4rem', textAlign: 'center', marginBottom: '1rem', color: 'var(--espresso)' }}>INSIDE <span style={{ color: 'var(--gold-dark)' }}>JUMP AI</span></h2>
+              <p style={{ textAlign: 'center', color: 'var(--text-body)', fontSize: '1.2rem', maxWidth: '800px', margin: '0 auto 5rem', lineHeight: 1.6 }}>
                 Powered by cutting-edge computer vision and deep learning, this platform brings Olympic-level biomechanical analysis directly to your browser. No markers, no suits, just pure intelligence.
               </p>
               
               <div className="grid" style={{ gap: '2rem' }}>
                 <div className="card">
                   <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⚡</div>
-                  <h3 style={{ color: 'var(--accent-gold)', fontSize: '1.5rem' }}>Real-Time Tracking</h3>
-                  <p style={{ color: 'var(--text-muted)', lineHeight: '1.7', fontSize: '1.05rem' }}>
+                  <h3 style={{ color: 'var(--gold-dark)', fontSize: '1.8rem' }}>Real-Time Tracking</h3>
+                  <p style={{ color: 'var(--text-body)', lineHeight: '1.7', fontSize: '1.1rem' }}>
                     Utilizing blazing-fast neural networks, Jump AI tracks 33 3D anatomical landmarks in real-time right from your phone or webcam.
                   </p>
                 </div>
                 
                 <div className="card">
                   <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🧠</div>
-                  <h3 style={{ color: 'var(--accent-dark)', fontSize: '1.5rem' }}>Physics Engine</h3>
-                  <p style={{ color: 'var(--text-muted)', lineHeight: '1.7', fontSize: '1.05rem' }}>
+                  <h3 style={{ color: 'var(--espresso)', fontSize: '1.8rem' }}>Physics Engine</h3>
+                  <p style={{ color: 'var(--text-body)', lineHeight: '1.7', fontSize: '1.1rem' }}>
                     Our custom heuristics engine calculates joint angles, hip velocities, and center of mass trajectories to pinpoint precisely where you're losing distance.
                   </p>
                 </div>
                 
                 <div className="card">
                   <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📈</div>
-                  <h3 style={{ color: 'var(--accent-gold)', fontSize: '1.5rem' }}>Pro Coaching</h3>
-                  <p style={{ color: 'var(--text-muted)', lineHeight: '1.7', fontSize: '1.05rem' }}>
+                  <h3 style={{ color: 'var(--gold-dark)', fontSize: '1.8rem' }}>Pro Coaching</h3>
+                  <p style={{ color: 'var(--text-body)', lineHeight: '1.7', fontSize: '1.1rem' }}>
                     Beyond just raw data, the AI translates complex physics into actionable coaching. Get customized drills and the "Top Fix" to immediately add inches to your next jump.
                   </p>
                 </div>
               </div>
 
-              <div style={{ marginTop: '6rem', marginBottom: '2rem', padding: '4rem 2rem', background: 'var(--card-bg)', backdropFilter: 'blur(20px)', borderRadius: '24px', border: '1px solid var(--card-border)', textAlign: 'center', boxShadow: 'var(--shadow-md)' }}>
-                <h2 style={{ marginBottom: '1rem', fontSize: '2.5rem' }}>Built for Champions.</h2>
-                <p style={{ fontSize: '1.3rem', color: 'var(--text-muted)', marginBottom: '3rem' }}>
+              <div className="card" style={{ marginTop: '8rem', marginBottom: '2rem', textAlign: 'center' }}>
+                <h2 style={{ marginBottom: '1rem', fontSize: '3rem' }}>Built for Champions.</h2>
+                <p style={{ fontSize: '1.3rem', color: 'var(--text-body)', marginBottom: '3rem' }}>
                   A seamless fusion of sports science, artificial intelligence, and beautiful design.
                 </p>
-                <div style={{ display: 'inline-block', background: 'rgba(0,0,0,0.03)', padding: '1.5rem 4rem', borderRadius: '50px', border: '1px solid var(--border-color)', fontSize: '1.2rem' }}>
-                  Made with <span style={{ color: 'var(--accent-dark)' }}>🤍</span> by <strong style={{ color: 'var(--accent-gold)', letterSpacing: '3px', marginLeft: '10px' }}>AVIROOP GHOSH</strong>
+                <div style={{ display: 'inline-block', background: 'rgba(255,255,255,0.8)', padding: '1.5rem 4rem', borderRadius: '100px', border: '1px solid rgba(24,21,18,0.1)', fontSize: '1.2rem', boxShadow: '0 10px 20px rgba(24,21,18,0.05)' }}>
+                  Made with <span style={{ color: 'var(--espresso)' }}>🤍</span> by <strong style={{ color: 'var(--gold-dark)', letterSpacing: '4px', marginLeft: '10px' }}>AVIROOP GHOSH</strong>
                 </div>
               </div>
             </div>

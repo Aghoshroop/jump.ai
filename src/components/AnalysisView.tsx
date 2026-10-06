@@ -110,28 +110,28 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
       <div className="mt-4" style={{ paddingTop: '2rem' }}>
         <h2 className="text-center" style={{ fontSize: '2.5rem', marginBottom: '3rem' }}>Analysis Complete</h2>
         
-        <h3 style={{ textAlign: 'center', marginBottom: '2rem', color: 'var(--text-muted)' }}>PHASE BREAKDOWN</h3>
+        <h3 style={{ textAlign: 'center', marginBottom: '2rem', color: 'var(--gold-dark)' }}>PHASE BREAKDOWN</h3>
         <div className="grid" style={{ marginBottom: '4rem' }}>
             {Object.entries(result.phases || {}).map(([phaseName, phaseData]: [string, any]) => (
                 <div key={phaseName} className="card phase-card" style={{ padding: '0', overflow: 'hidden' }}>
                     {phaseData.image_url && (
                         <div style={{ width: '100%', height: '180px', backgroundImage: `url(${phaseData.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
                     )}
-                    <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+                    <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
                         <div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                                <h4 style={{ color: 'var(--accent-dark)', margin: 0, fontSize: '1.2rem' }}>{phaseName}</h4>
-                                <span style={{ background: 'rgba(194, 168, 120, 0.15)', color: 'var(--accent-gold)', padding: '4px 10px', borderRadius: '20px', fontWeight: 'bold' }}>
+                                <h4 style={{ color: 'var(--espresso)', margin: 0, fontSize: '1.4rem' }}>{phaseName}</h4>
+                                <span style={{ background: 'rgba(145, 117, 64, 0.15)', color: 'var(--gold-dark)', padding: '6px 14px', borderRadius: '100px', fontWeight: '800', fontFamily: 'Syne, sans-serif' }}>
                                     {result.phase_scores?.[phaseName] || 'N/A'}
                                 </span>
                             </div>
                             
                             {result.metrics?.[phaseName] && (
-                                <div className="mt-4" style={{ fontSize: '0.95rem', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                                <div className="mt-4" style={{ fontSize: '1rem', color: 'var(--text-body)', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                                     {Object.entries(result.metrics[phaseName]).map(([mName, mVal]: [string, any]) => (
-                                        <div key={mName} style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+                                        <div key={mName} style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--sand-3)', paddingBottom: '0.5rem' }}>
                                             <span style={{ textTransform: 'capitalize' }}>{mName.replace(/_/g, ' ')}</span>
-                                            <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>{mVal}</span>
+                                            <span style={{ color: 'var(--espresso)', fontWeight: 700 }}>{mVal}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -157,21 +157,21 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
         <div className="flex" style={{ gap: '2rem', flexWrap: 'wrap', marginBottom: '3rem', width: '100%' }}>
             <div className="card text-center" style={{ flex: '1 1 300px', maxWidth: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', boxSizing: 'border-box' }}>
                 <div className="score-circle">{result.overall_score}</div>
-                <h3 style={{ margin: 0, color: 'var(--text-muted)', letterSpacing: '4px' }}>OVERALL SCORE</h3>
+                <h3 style={{ margin: 0, color: 'var(--gold-dark)', letterSpacing: '4px' }}>OVERALL SCORE</h3>
             </div>
             
             {result.coaching && (
-                <div className="card" style={{ flex: '2 1 300px', maxWidth: '100%', background: 'rgba(255,255,255,0.5)', boxSizing: 'border-box', overflow: 'hidden' }}>
+                <div className="card" style={{ flex: '2 1 300px', maxWidth: '100%', background: 'rgba(255,255,255,0.7)', boxSizing: 'border-box', overflow: 'hidden' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dark)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                             <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                         </svg>
-                        <h3 style={{ margin: 0, color: 'var(--accent-dark)' }}>TOP FIX</h3>
+                        <h3 style={{ margin: 0, color: 'var(--espresso)' }}>TOP FIX</h3>
                     </div>
-                    <p style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '1rem', lineHeight: 1.3, wordWrap: 'break-word', color: 'var(--accent-dark)' }}>"{result.coaching.top_fix}"</p>
-                    <p className="mt-2" style={{ color: 'var(--text-muted)', fontSize: '1.1rem', lineHeight: 1.6, wordWrap: 'break-word' }}><strong>Why:</strong> {result.coaching.why}</p>
-                    <div className="mt-4" style={{ background: 'rgba(0,0,0,0.03)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid var(--accent-gold)', wordWrap: 'break-word' }}>
-                        <p style={{ margin: 0 }}><strong>Try this drill:</strong> {result.coaching.drill}</p>
+                    <p style={{ fontSize: '1.6rem', fontWeight: 800, marginBottom: '1rem', lineHeight: 1.3, wordWrap: 'break-word', color: 'var(--espresso)', fontFamily: 'Syne, sans-serif' }}>"{result.coaching.top_fix}"</p>
+                    <p className="mt-2" style={{ color: 'var(--text-body)', fontSize: '1.1rem', lineHeight: 1.6, wordWrap: 'break-word' }}><strong>Why:</strong> {result.coaching.why}</p>
+                    <div className="mt-4" style={{ background: 'rgba(24,21,18,0.03)', padding: '1.5rem', borderRadius: '16px', borderLeft: '4px solid var(--gold-dark)', wordWrap: 'break-word' }}>
+                        <p style={{ margin: 0, color: 'var(--espresso)' }}><strong>Try this drill:</strong> {result.coaching.drill}</p>
                     </div>
                 </div>
             )}
