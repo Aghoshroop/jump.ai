@@ -86,7 +86,7 @@ export async function processVideoFile(file: File | Blob, onProgress: (progress:
                 const phases = detectPhases(framesData, fps);
                 const metrics = calculateBiomechanics(framesData, phases);
                 const scoreData = scoreJump(metrics);
-                const coaching = generateCoaching(scoreData, metrics);
+                const coaching = generateCoaching(metrics);
                 
                 onProgress(95, 'Extracting phase imagery...');
                 

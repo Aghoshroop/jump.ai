@@ -16,18 +16,6 @@ export function detectPhases(framesData: FrameData[], fps: number) {
         return { x: (lm[23].x + lm[24].x) / 2, y: (lm[23].y + lm[24].y) / 2 };
     };
     
-    const getLowestFootY = (f: FrameData) => {
-        const lm = f.landmarks!;
-        return Math.max(lm[27].y, lm[28].y, lm[29].y, lm[30].y, lm[31].y, lm[32].y);
-    };
-    
-    const getFurthestFootX = (f: FrameData) => {
-        const lm = f.landmarks!;
-        const hx = getHip(f).x;
-        return Math.max(Math.abs(lm[27].x - hx), Math.abs(lm[28].x - hx), Math.abs(lm[31].x - hx), Math.abs(lm[32].x - hx));
-    };
-    
-    const legExtYRaw = validFrames.map(f => getLowestFootY(f) - getHip(f).y);
     const strideXRaw = validFrames.map(f => Math.abs(f.landmarks![27].x - f.landmarks![28].x));
     const hipYRaw = validFrames.map(f => getHip(f).y);
     
@@ -43,7 +31,6 @@ export function detectPhases(framesData: FrameData[], fps: number) {
         return smoothed;
     };
     
-    const legExtY = smoothArray(legExtYRaw, 7);
     const strideX = smoothArray(strideXRaw, 7);
     const hipY = smoothArray(hipYRaw, 7);
     
@@ -211,7 +198,7 @@ export function scoreJump(metrics: any) {
     };
 }
 
-export function generateCoaching(scoreData: any, metrics: any) {
+export function generateCoaching(metrics: any) {
     if (!metrics || Object.keys(metrics).length === 0) return null;
     
     let biggestDeficit = -1;
