@@ -1,3 +1,12 @@
+---
+title: Jump AI
+emoji: 🏃
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 8000
+---
+
 # Jump AI
 
 AI-powered long jump technique analysis application.
