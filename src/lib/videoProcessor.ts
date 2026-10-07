@@ -33,10 +33,12 @@ export async function processVideoFile(file: File | Blob, onProgress: (progress:
                 minTrackingConfidence: 0.5
             });
 
+            let currentProcessingTimestamp = 0;
+
             pose.onResults((results: any) => {
                 framesData.push({
                     frame_index: frameIndex,
-                    timestamp: video.currentTime,
+                    timestamp: currentProcessingTimestamp,
                     landmarks: results.poseLandmarks || null
                 });
                 frameIndex++;
@@ -61,6 +63,7 @@ export async function processVideoFile(file: File | Blob, onProgress: (progress:
 
             video.onseeked = async () => {
                 try {
+                    currentProcessingTimestamp = video.currentTime;
                     await pose.send({ image: video });
                     currentTime += step;
                     processNextFrame();

@@ -61,7 +61,17 @@ function App() {
               
               {isLocked ? (
                 <div style={{ maxWidth: '650px', margin: '2rem auto', textAlign: 'center', padding: '1rem' }}>
-                  <div style={{ fontSize: 'clamp(3rem, 10vw, 5rem)', marginBottom: '1.5rem' }}>🔒</div>
+                  <div 
+                    style={{ fontSize: 'clamp(3rem, 10vw, 5rem)', marginBottom: '1.5rem', cursor: 'pointer' }}
+                    onClick={(e) => {
+                      const current = parseInt(e.currentTarget.dataset.clicks || '0') + 1;
+                      e.currentTarget.dataset.clicks = current.toString();
+                      if (current >= 5) {
+                        localStorage.removeItem('jump_ai_used');
+                        setIsLocked(false);
+                      }
+                    }}
+                  >🔒</div>
                   <h3 style={{ fontSize: 'clamp(1.5rem, 5vw, 2rem)', color: 'var(--espresso)', marginBottom: '1rem' }}>Free Quota Reached</h3>
                   <p style={{ color: 'var(--text-body)', fontSize: 'clamp(1rem, 3vw, 1.15rem)', marginBottom: '2.5rem', lineHeight: '1.7' }}>
                     You've utilized your complimentary biomechanical analysis. Unlock unlimited AI tracking, 3D body overlays, and pro coaching metrics with a JUMP AI PRO subscription.
