@@ -108,9 +108,9 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
       </div>
 
       <div className="mt-4" style={{ paddingTop: '2rem' }}>
-        <h2 className="text-center" style={{ fontSize: '2.5rem', marginBottom: '3rem' }}>Analysis Complete</h2>
+        <h2 className="text-center" style={{ fontSize: 'clamp(2rem, 6vw, 2.5rem)', marginBottom: '3rem' }}>Analysis Complete</h2>
         
-        <h3 style={{ textAlign: 'center', marginBottom: '2rem', color: 'var(--gold-dark)' }}>PHASE BREAKDOWN</h3>
+        <h3 style={{ textAlign: 'center', marginBottom: '2rem', color: 'var(--gold-dark)', fontSize: 'clamp(1rem, 4vw, 1.2rem)' }}>PHASE BREAKDOWN</h3>
         <div className="grid" style={{ marginBottom: '4rem' }}>
             {Object.entries(result.phases || {}).map(([phaseName, phaseData]: [string, any]) => (
                 <div key={phaseName} className="card phase-card" style={{ padding: '0', overflow: 'hidden' }}>
@@ -155,9 +155,9 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
         </div>
 
         <div className="flex" style={{ gap: '2rem', flexWrap: 'wrap', marginBottom: '3rem', width: '100%' }}>
-            <div className="card text-center" style={{ flex: '1 1 300px', maxWidth: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', boxSizing: 'border-box' }}>
-                <div className="score-circle">{result.overall_score}</div>
-                <h3 style={{ margin: 0, color: 'var(--gold-dark)', letterSpacing: '4px' }}>OVERALL SCORE</h3>
+            <div className="card text-center" style={{ flex: '1 1 300px', maxWidth: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', boxSizing: 'border-box', padding: '2rem' }}>
+                <div className="score-circle" style={{ width: 'clamp(120px, 40vw, 160px)', height: 'clamp(120px, 40vw, 160px)', fontSize: 'clamp(3rem, 10vw, 5rem)' }}>{result.overall_score}</div>
+                <h3 style={{ margin: 0, color: 'var(--gold-dark)', letterSpacing: '4px', fontSize: 'clamp(1rem, 3vw, 1.2rem)' }}>OVERALL SCORE</h3>
             </div>
             
             {result.coaching && (
@@ -166,12 +166,12 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dark)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                             <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                         </svg>
-                        <h3 style={{ margin: 0, color: 'var(--espresso)' }}>TOP FIX</h3>
+                        <h3 style={{ margin: 0, color: 'var(--espresso)', fontSize: 'clamp(1.2rem, 4vw, 1.5rem)' }}>TOP FIX</h3>
                     </div>
-                    <p style={{ fontSize: '1.6rem', fontWeight: 800, marginBottom: '1rem', lineHeight: 1.3, wordWrap: 'break-word', color: 'var(--espresso)', fontFamily: 'Syne, sans-serif' }}>"{result.coaching.top_fix}"</p>
-                    <p className="mt-2" style={{ color: 'var(--text-body)', fontSize: '1.1rem', lineHeight: 1.6, wordWrap: 'break-word' }}><strong>Why:</strong> {result.coaching.why}</p>
+                    <p style={{ fontSize: 'clamp(1.2rem, 5vw, 1.6rem)', fontWeight: 800, marginBottom: '1rem', lineHeight: 1.3, wordWrap: 'break-word', color: 'var(--espresso)', fontFamily: 'Syne, sans-serif' }}>"{result.coaching.top_fix}"</p>
+                    <p className="mt-2" style={{ color: 'var(--text-body)', fontSize: 'clamp(1rem, 3.5vw, 1.1rem)', lineHeight: 1.6, wordWrap: 'break-word' }}><strong>Why:</strong> {result.coaching.why}</p>
                     <div className="mt-4" style={{ background: 'rgba(24,21,18,0.03)', padding: '1.5rem', borderRadius: '16px', borderLeft: '4px solid var(--gold-dark)', wordWrap: 'break-word' }}>
-                        <p style={{ margin: 0, color: 'var(--espresso)' }}><strong>Try this drill:</strong> {result.coaching.drill}</p>
+                        <p style={{ margin: 0, color: 'var(--espresso)', fontSize: 'clamp(0.95rem, 3.5vw, 1.05rem)' }}><strong>Try this drill:</strong> {result.coaching.drill}</p>
                     </div>
                 </div>
             )}

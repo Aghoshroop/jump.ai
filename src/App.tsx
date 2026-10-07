@@ -55,18 +55,18 @@ function App() {
           {/* 2. UPLOAD SECTION */}
           <section className="upload-section" id="upload">
             <div className="container text-center">
-              <h2 className="section-title" style={{ fontSize: '1.5rem', color: 'var(--gold-dark)', letterSpacing: '4px' }}>STEP 01 &nbsp;—&nbsp; CAPTURE</h2>
-              <h3 style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>Upload your jump.</h3>
-              <p className="section-desc">Provide a clear, side-profile video of your long jump attempt.</p>
+              <h2 className="section-title" style={{ fontSize: 'clamp(1rem, 3vw, 1.5rem)', color: 'var(--gold-dark)', letterSpacing: '4px' }}>STEP 01 &nbsp;—&nbsp; CAPTURE</h2>
+              <h3 style={{ fontSize: 'clamp(2rem, 8vw, 3.5rem)', marginBottom: '1rem' }}>Upload your jump.</h3>
+              <p className="section-desc" style={{ padding: '0 1rem' }}>Provide a clear, side-profile video of your long jump attempt.</p>
               
               {isLocked ? (
-                <div className="card" style={{ maxWidth: '650px', margin: '4rem auto', textAlign: 'center' }}>
-                  <div style={{ fontSize: '5rem', marginBottom: '1.5rem' }}>🔒</div>
-                  <h3 style={{ fontSize: '2rem', color: 'var(--espresso)', marginBottom: '1rem' }}>Free Quota Reached</h3>
-                  <p style={{ color: 'var(--text-body)', fontSize: '1.15rem', marginBottom: '2.5rem', lineHeight: '1.7' }}>
+                <div className="card" style={{ maxWidth: '650px', margin: '2rem auto', textAlign: 'center' }}>
+                  <div style={{ fontSize: 'clamp(3rem, 10vw, 5rem)', marginBottom: '1.5rem' }}>🔒</div>
+                  <h3 style={{ fontSize: 'clamp(1.5rem, 5vw, 2rem)', color: 'var(--espresso)', marginBottom: '1rem' }}>Free Quota Reached</h3>
+                  <p style={{ color: 'var(--text-body)', fontSize: 'clamp(1rem, 3vw, 1.15rem)', marginBottom: '2.5rem', lineHeight: '1.7' }}>
                     You've utilized your complimentary biomechanical analysis. Unlock unlimited AI tracking, 3D body overlays, and pro coaching metrics with a JUMP AI PRO subscription.
                   </p>
-                  <button className="primary-btn" style={{ width: '100%', padding: '20px' }}>
+                  <button className="primary-btn" style={{ width: '100%', padding: '16px' }}>
                     UPGRADE TO PRO
                   </button>
                   <p style={{ marginTop: '1.5rem', fontSize: '0.9rem', color: 'var(--text-body)' }}>
@@ -85,9 +85,9 @@ function App() {
           {/* 3. ENGINE INFO SECTION */}
           <section className="engine-section">
             <div className="container">
-              <div className="text-center" style={{ marginBottom: '6rem' }}>
-                <h2 className="section-title" style={{ fontSize: '1.5rem', color: 'var(--gold-dark)', letterSpacing: '4px' }}>THE ENGINE</h2>
-                <h3 style={{ fontSize: '4rem', margin: 0 }}>Built for Champions.</h3>
+              <div className="text-center" style={{ marginBottom: '4rem' }}>
+                <h2 className="section-title" style={{ fontSize: 'clamp(1rem, 3vw, 1.5rem)', color: 'var(--gold-dark)', letterSpacing: '4px' }}>THE ENGINE</h2>
+                <h3 style={{ fontSize: 'clamp(2.5rem, 8vw, 4rem)', margin: 0 }}>Built for Champions.</h3>
               </div>
               
               <div className="grid engine-grid">
