@@ -86,26 +86,6 @@ const VideoUploader: React.FC<Props> = ({ onUploadSuccess }) => {
     setTimeout(async () => {
         if (!liveVideoRef.current || !canvasRef.current) return;
         
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ 
-                video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 60 } } 
-            });
-            liveVideoRef.current.srcObject = stream;
-            
-            // Start recording immediately
-            const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
-            mediaRecorder.ondataavailable = (e) => {
-                if (e.data && e.data.size > 0) chunksRef.current.push(e.data);
-            };
-            mediaRecorder.onstop = () => {
-                if (hasJumped.current) {
-                    const blob = new Blob(chunksRef.current, { type: 'video/webm' });
-                    handleFile(blob);
-                }
-            };
-            mediaRecorderRef.current = mediaRecorder;
-            mediaRecorder.start(100);
-
             // Set up MediaPipe
             const pose = new Pose({
                 locateFile: (file: any) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`,
@@ -161,11 +141,38 @@ const VideoUploader: React.FC<Props> = ({ onUploadSuccess }) => {
             const camera = new Camera(liveVideoRef.current, {
                 onFrame: async () => {
                     if (liveVideoRef.current) {
+                        // Initialize MediaRecorder once the camera has successfully acquired the stream
+                        if (!mediaRecorderRef.current && liveVideoRef.current.srcObject) {
+                            try {
+                                const stream = liveVideoRef.current.srcObject as MediaStream;
+                                // Determine supported mime type on mobile
+                                let mimeType = 'video/webm';
+                                if (!MediaRecorder.isTypeSupported(mimeType)) {
+                                    mimeType = 'video/mp4';
+                                }
+                                const mediaRecorder = new MediaRecorder(stream, { mimeType });
+                                mediaRecorder.ondataavailable = (e) => {
+                                    if (e.data && e.data.size > 0) chunksRef.current.push(e.data);
+                                };
+                                mediaRecorder.onstop = () => {
+                                    if (hasJumped.current) {
+                                        const blob = new Blob(chunksRef.current, { type: mimeType });
+                                        handleFile(blob);
+                                    }
+                                };
+                                mediaRecorderRef.current = mediaRecorder;
+                                mediaRecorder.start(100);
+                            } catch (e) {
+                                console.error('MediaRecorder failed', e);
+                            }
+                        }
+
                         await pose.send({ image: liveVideoRef.current });
                     }
                 },
                 width: 1280,
-                height: 720
+                height: 720,
+                facingMode: 'environment'
             });
             camera.start();
             cameraRef.current = camera;
