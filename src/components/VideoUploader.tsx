@@ -281,12 +281,24 @@ const VideoUploader: React.FC<Props> = ({ onUploadSuccess }) => {
       )}
 
       {isUploading && (
-        <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(0,0,0,0.3)', borderRadius: '12px' }}>
-          <p style={{ color: 'var(--accent-orange)', fontWeight: 'bold', fontSize: '1.2rem', marginBottom: '1rem' }}>
-            {uploadMessage}
-          </p>
-          <div style={{ width: '100%', height: '12px', background: 'rgba(255,255,255,0.1)', borderRadius: '6px', overflow: 'hidden' }}>
-            <div style={{ width: `${uploadProgress}%`, height: '100%', background: 'linear-gradient(90deg, var(--accent-gold), var(--accent-orange))', transition: 'width 0.2s ease-out' }}></div>
+        <div className="loading-widget">
+          <div className="scanner-beam"></div>
+          
+          <div className="processing-rings">
+            <div className="ring outer"></div>
+            <div className="ring middle"></div>
+            <div className="ring inner"></div>
+            <div className="percentage-text">{Math.round(uploadProgress)}%</div>
+          </div>
+          
+          <div className="loading-glitch-text">
+            {uploadMessage.toUpperCase()}
+          </div>
+          
+          <div className="loading-log-container">
+            <div>&gt; initialize_mediapipe_vision</div>
+            <div>&gt; extract_skeleton_nodes [OK]</div>
+            <div style={{ color: 'var(--gold-dark)' }}>&gt; computing_kinematics... {Math.round(uploadProgress)}%</div>
           </div>
         </div>
       )}

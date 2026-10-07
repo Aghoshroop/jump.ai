@@ -514,3 +514,119 @@ button {
     box-sizing: border-box;
   }
 }
+
+/* High-Tech Biometric Loading */
+.loading-widget {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  margin: 3rem auto;
+  padding: 3rem 2rem;
+  background: var(--espresso);
+  border-radius: 24px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.05);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.scanner-beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, rgba(212, 184, 122, 0.1) 48%, var(--gold-dark) 50%, rgba(212, 184, 122, 0.1) 52%, transparent);
+  background-size: 100% 200%;
+  animation: scan 2.5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes scan {
+  0% { background-position: 0% -100%; }
+  100% { background-position: 0% 200%; }
+}
+
+.processing-rings {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 2.5rem;
+}
+
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  box-sizing: border-box;
+}
+
+.ring.outer {
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border-top-color: var(--gold-dark);
+  border-bottom-color: var(--gold-light);
+  border-left-color: rgba(145, 117, 64, 0.2);
+  border-right-color: rgba(145, 117, 64, 0.2);
+  animation: spin 3s linear infinite;
+}
+
+.ring.middle {
+  top: 15px; left: 15px;
+  width: calc(100% - 30px); height: calc(100% - 30px);
+  border-left-color: var(--sand-3);
+  border-right-color: var(--sand-1);
+  border-top-color: rgba(255,255,255,0.1);
+  border-bottom-color: rgba(255,255,255,0.1);
+  animation: spin 2s linear infinite reverse;
+}
+
+.ring.inner {
+  top: 30px; left: 30px;
+  width: calc(100% - 60px); height: calc(100% - 60px);
+  border-top-color: #10b981;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.percentage-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Syne', sans-serif;
+  color: var(--sand-1);
+  font-weight: 800;
+  font-size: 1.8rem;
+  letter-spacing: -1px;
+}
+
+.loading-log-container {
+  background: rgba(0,0,0,0.5);
+  border-radius: 12px;
+  padding: 1rem;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.8rem;
+  color: #10b981;
+  text-align: left;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+.loading-glitch-text {
+  font-family: 'Syne', sans-serif;
+  color: var(--sand-1);
+  text-transform: uppercase;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 700;
+}
