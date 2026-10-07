@@ -70,7 +70,7 @@ function App() {
                     UPGRADE TO PRO
                   </button>
                   <p style={{ marginTop: '1.5rem', fontSize: '0.9rem', color: 'var(--text-body)' }}>
-                    Just $9.99/mo. Cancel anytime.
+                    Just $1. One-time payment. Lifetime access.
                   </p>
                   <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(24,21,18,0.1)', fontSize: '0.95rem' }}>
                     <p style={{ margin: 0, color: 'var(--text-body)' }}>Are you a Developer or Coach? <a href="#" style={{ color: 'var(--espresso)', fontWeight: 700, textDecoration: 'none', borderBottom: '1px solid var(--espresso)' }}>Contact Us</a> for custom enterprise plans.</p>
