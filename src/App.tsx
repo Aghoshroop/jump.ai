@@ -60,7 +60,7 @@ function App() {
               <p className="section-desc" style={{ padding: '0 1rem' }}>Provide a clear, side-profile video of your long jump attempt.</p>
               
               {isLocked ? (
-                <div className="card" style={{ maxWidth: '650px', margin: '2rem auto', textAlign: 'center' }}>
+                <div style={{ maxWidth: '650px', margin: '2rem auto', textAlign: 'center', padding: '1rem' }}>
                   <div style={{ fontSize: 'clamp(3rem, 10vw, 5rem)', marginBottom: '1.5rem' }}>🔒</div>
                   <h3 style={{ fontSize: 'clamp(1.5rem, 5vw, 2rem)', color: 'var(--espresso)', marginBottom: '1rem' }}>Free Quota Reached</h3>
                   <p style={{ color: 'var(--text-body)', fontSize: 'clamp(1rem, 3vw, 1.15rem)', marginBottom: '2.5rem', lineHeight: '1.7' }}>
@@ -87,11 +87,11 @@ function App() {
             <div className="container">
               <div className="text-center" style={{ marginBottom: '4rem' }}>
                 <h2 className="section-title" style={{ fontSize: 'clamp(1rem, 3vw, 1.5rem)', color: 'var(--gold-dark)', letterSpacing: '4px' }}>THE ENGINE</h2>
-                <h3 style={{ fontSize: 'clamp(1.8rem, 10vw, 4rem)', margin: 0 }}>Built for<br/>Champions.</h3>
+                <h3 style={{ fontSize: 'clamp(1.5rem, 8vw, 3rem)', margin: 0 }}>Built for<br/>Champions.</h3>
               </div>
               
               <div className="grid engine-grid">
-                <div className="card engine-card">
+                <div className="engine-card">
                   <div className="engine-icon">⚡</div>
                   <h3 className="engine-card-title">Real-Time Tracking</h3>
                   <p className="engine-card-desc">
@@ -99,7 +99,7 @@ function App() {
                   </p>
                 </div>
                 
-                <div className="card engine-card">
+                <div className="engine-card">
                   <div className="engine-icon">🧠</div>
                   <h3 className="engine-card-title">Physics Engine</h3>
                   <p className="engine-card-desc">
@@ -107,7 +107,7 @@ function App() {
                   </p>
                 </div>
                 
-                <div className="card engine-card">
+                <div className="engine-card">
                   <div className="engine-icon">📈</div>
                   <h3 className="engine-card-title">Pro Coaching</h3>
                   <p className="engine-card-desc">

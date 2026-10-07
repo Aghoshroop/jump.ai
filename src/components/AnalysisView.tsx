@@ -113,7 +113,7 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
         <h3 style={{ textAlign: 'center', marginBottom: '2rem', color: 'var(--gold-dark)', fontSize: 'clamp(1rem, 4vw, 1.2rem)' }}>PHASE BREAKDOWN</h3>
         <div className="grid" style={{ marginBottom: '4rem' }}>
             {Object.entries(result.phases || {}).map(([phaseName, phaseData]: [string, any]) => (
-                <div key={phaseName} className="card phase-card" style={{ padding: '0', overflow: 'hidden' }}>
+                <div key={phaseName} className="phase-card" style={{ padding: '0', overflow: 'hidden' }}>
                     {phaseData.image_url && (
                         <div style={{ width: '100%', height: '180px', backgroundImage: `url(${phaseData.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
                     )}
@@ -155,13 +155,13 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
         </div>
 
         <div className="flex" style={{ gap: '2rem', flexWrap: 'wrap', marginBottom: '3rem', width: '100%' }}>
-            <div className="card text-center" style={{ flex: '1 1 300px', maxWidth: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', boxSizing: 'border-box', padding: '2rem' }}>
+            <div className="text-center" style={{ flex: '1 1 300px', maxWidth: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', boxSizing: 'border-box', padding: '2rem' }}>
                 <div className="score-circle" style={{ width: 'clamp(120px, 40vw, 160px)', height: 'clamp(120px, 40vw, 160px)', fontSize: 'clamp(3rem, 10vw, 5rem)' }}>{result.overall_score}</div>
                 <h3 style={{ margin: 0, color: 'var(--gold-dark)', letterSpacing: '4px', fontSize: 'clamp(1rem, 3vw, 1.2rem)' }}>OVERALL SCORE</h3>
             </div>
             
             {result.coaching && (
-                <div className="card" style={{ flex: '2 1 300px', maxWidth: '100%', background: 'rgba(255,255,255,0.7)', boxSizing: 'border-box', overflow: 'hidden' }}>
+                <div style={{ flex: '2 1 300px', maxWidth: '100%', boxSizing: 'border-box', overflow: 'hidden', padding: '1rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dark)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                             <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
