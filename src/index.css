@@ -183,20 +183,27 @@ button {
   position: relative;
   text-align: center;
   padding: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 .hero-content {
+  width: 100%;
   max-width: 1000px;
   margin-top: -5vh;
+  padding: 0 1rem;
+  box-sizing: border-box;
 }
 .hero-title {
-  font-size: clamp(3rem, 12vw, 9rem);
+  font-size: clamp(2.5rem, 10vw, 8rem);
   line-height: 1;
   letter-spacing: -0.05em;
   color: var(--espresso);
   margin-bottom: 2rem;
+  word-wrap: break-word;
 }
 .hero-subtitle {
-  font-size: clamp(1rem, 2.5vw, 1.8rem);
+  font-size: clamp(1rem, 4vw, 1.5rem);
   max-width: 800px;
   color: var(--text-body);
   margin: 0 auto;
@@ -409,11 +416,12 @@ button {
 
 @media (max-width: 768px) {
   .hero-title {
-    font-size: clamp(2.5rem, 12vw, 4rem);
+    font-size: clamp(2rem, 12vw, 3.5rem);
+    letter-spacing: -0.02em;
   }
   .hero-subtitle {
-    font-size: 1rem;
-    padding: 0 1rem;
+    font-size: 1.05rem;
+    padding: 0 0.5rem;
   }
   .top-nav {
     padding: 1.5rem;
