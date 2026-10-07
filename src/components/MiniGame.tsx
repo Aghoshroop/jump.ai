@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 const GAMES = [
-  { id: '2048', name: '2048', url: 'https://gabrielecirulli.github.io/2048/', icon: '🧩' },
-  { id: 'tetris', name: 'Tetris', url: 'https://chvin.github.io/react-tetris/?lan=en', icon: '🧱' },
-  { id: 'pacman', name: 'Pacman', url: 'https://pacman.platzh1rsch.ch/', icon: '👻' },
-  { id: 'hextris', name: 'Hextris', url: 'https://hextris.github.io/hextris/', icon: '⬡' }
+  { id: 'basketball', name: 'Hoops Legends', url: 'https://www.crazygames.com/embed/basketball-legends-2020', icon: '🏀' },
+  { id: 'retrobowl', name: 'Retro Bowl', url: 'https://www.crazygames.com/embed/retro-bowl', icon: '🏈' },
+  { id: 'soccer', name: 'Soccer Random', url: 'https://www.crazygames.com/embed/soccer-random', icon: '⚽' },
+  { id: 'motox3m', name: 'Moto X3M', url: 'https://www.crazygames.com/embed/moto-x3m', icon: '🏍️' }
 ];
 
 const MiniGame: React.FC = () => {
