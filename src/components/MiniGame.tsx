@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 const GAMES = [
-  { id: '2048', name: '2048', url: 'https://play2048.co/', icon: '🧩' },
-  { id: 'tictactoe', name: 'Tic Tac Toe', url: 'https://playtictactoe.org/', icon: '❌' },
-  { id: 'flappy', name: 'Flappy Bird', url: 'https://flappybird.io/', icon: '🐦' },
-  { id: 'hextris', name: 'Hextris', url: 'https://hextris.io/', icon: '⬡' }
+  { id: '2048', name: '2048', url: 'https://gabrielecirulli.github.io/2048/', icon: '🧩' },
+  { id: 'tetris', name: 'Tetris', url: 'https://chvin.github.io/react-tetris/?lan=en', icon: '🧱' },
+  { id: 'pacman', name: 'Pacman', url: 'https://pacman.platzh1rsch.ch/', icon: '👻' },
+  { id: 'hextris', name: 'Hextris', url: 'https://hextris.github.io/hextris/', icon: '⬡' }
 ];
 
 const MiniGame: React.FC = () => {
