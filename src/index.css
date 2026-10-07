@@ -422,6 +422,9 @@ button {
 }
 
 @media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
   .hero-title {
     font-size: clamp(1.5rem, 10vw, 3rem);
     letter-spacing: -0.02em;
@@ -452,17 +455,18 @@ button {
     flex-direction: column;
   }
   .upload-zone {
-    padding: 1.2rem 2rem !important;
+    padding: 1rem 1.5rem !important;
     border-radius: 100px !important;
     border: none !important;
     background: var(--espresso) !important;
     color: var(--sand-1) !important;
     margin: 0 auto;
     width: 100%;
+    box-sizing: border-box !important;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 1.5rem;
+    justify-content: center;
+    gap: 1rem;
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
   }
   .upload-zone .upload-icon {
@@ -470,15 +474,17 @@ button {
     color: var(--gold-dark) !important;
   }
   .upload-zone .upload-icon svg {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
   }
   .upload-zone h4 {
     margin: 0 !important;
-    font-size: 1.1rem !important;
+    font-size: 0.95rem !important;
     color: var(--sand-1) !important;
     text-transform: uppercase;
     letter-spacing: 1px;
+    word-wrap: normal !important;
+    hyphens: none !important;
   }
   .upload-zone p {
     display: none;
