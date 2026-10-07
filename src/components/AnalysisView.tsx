@@ -161,18 +161,44 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
             </div>
             
             {result.coaching && (
-                <div style={{ flex: '2 1 300px', maxWidth: '100%', boxSizing: 'border-box', overflow: 'hidden', padding: '1rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dark)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                        </svg>
-                        <h3 style={{ margin: 0, color: 'var(--espresso)', fontSize: 'clamp(1.2rem, 4vw, 1.5rem)' }}>TOP FIX</h3>
-                    </div>
-                    <p style={{ fontSize: 'clamp(1.2rem, 5vw, 1.6rem)', fontWeight: 800, marginBottom: '1rem', lineHeight: 1.3, wordWrap: 'break-word', color: 'var(--espresso)', fontFamily: 'Syne, sans-serif' }}>"{result.coaching.top_fix}"</p>
-                    <p className="mt-2" style={{ color: 'var(--text-body)', fontSize: 'clamp(1rem, 3.5vw, 1.1rem)', lineHeight: 1.6, wordWrap: 'break-word' }}><strong>Why:</strong> {result.coaching.why}</p>
-                    <div className="mt-4" style={{ background: 'rgba(24,21,18,0.03)', padding: '1.5rem', borderRadius: '16px', borderLeft: '4px solid var(--gold-dark)', wordWrap: 'break-word' }}>
-                        <p style={{ margin: 0, color: 'var(--espresso)', fontSize: 'clamp(0.95rem, 3.5vw, 1.05rem)' }}><strong>Try this drill:</strong> {result.coaching.drill}</p>
-                    </div>
+                <div style={{ flex: '2 1 300px', maxWidth: '100%', boxSizing: 'border-box', overflow: 'hidden', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                    
+                    {/* Strengths Section */}
+                    {result.coaching.bestTrait && (
+                        <div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                                <h3 style={{ margin: 0, color: 'var(--espresso)', fontSize: 'clamp(1rem, 3.5vw, 1.2rem)' }}>WHAT YOU DID BEST</h3>
+                            </div>
+                            <p style={{ fontSize: 'clamp(1.1rem, 4vw, 1.4rem)', fontWeight: 800, marginBottom: '0.8rem', lineHeight: 1.3, wordWrap: 'break-word', color: 'var(--espresso)', fontFamily: 'Syne, sans-serif' }}>"{result.coaching.bestTrait.title}"</p>
+                            <p style={{ color: 'var(--text-body)', fontSize: 'clamp(0.95rem, 3vw, 1.05rem)', lineHeight: 1.6, wordWrap: 'break-word' }}><strong>Why it matters:</strong> {result.coaching.bestTrait.why}</p>
+                        </div>
+                    )}
+
+                    {/* Weaknesses Section */}
+                    {result.coaching.worstIssue && (
+                        <div style={{ paddingTop: '1.5rem', borderTop: '1px solid var(--sand-3)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dark)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                                <h3 style={{ margin: 0, color: 'var(--espresso)', fontSize: 'clamp(1rem, 3.5vw, 1.2rem)' }}>CRITICAL FIX</h3>
+                            </div>
+                            <p style={{ fontSize: 'clamp(1.1rem, 4vw, 1.4rem)', fontWeight: 800, marginBottom: '0.8rem', lineHeight: 1.3, wordWrap: 'break-word', color: 'var(--espresso)', fontFamily: 'Syne, sans-serif' }}>"{result.coaching.worstIssue.top_fix}"</p>
+                            <p style={{ color: 'var(--text-body)', fontSize: 'clamp(0.95rem, 3vw, 1.05rem)', lineHeight: 1.6, wordWrap: 'break-word' }}><strong>The flaw:</strong> {result.coaching.worstIssue.why}</p>
+                            {result.coaching.worstIssue.drill && (
+                                <div className="mt-3" style={{ background: 'rgba(24,21,18,0.03)', padding: '1.2rem', borderRadius: '12px', borderLeft: '4px solid var(--gold-dark)', wordWrap: 'break-word' }}>
+                                    <p style={{ margin: 0, color: 'var(--espresso)', fontSize: 'clamp(0.9rem, 3vw, 1rem)' }}><strong>Try this drill:</strong> {result.coaching.worstIssue.drill}</p>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                    
                 </div>
             )}
         </div>
