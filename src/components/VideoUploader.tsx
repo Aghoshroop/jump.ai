@@ -246,7 +246,7 @@ const VideoUploader: React.FC<Props> = ({ onUploadSuccess }) => {
             </button>
           </div>
         </div>
-      ) : (
+      ) : isUploading ? null : (
         <div className="upload-options-container">
             <div 
               className={`upload-zone ${isDragActive ? 'drag-active' : ''}`}
@@ -291,14 +291,8 @@ const VideoUploader: React.FC<Props> = ({ onUploadSuccess }) => {
             <div className="percentage-text">{Math.round(uploadProgress)}%</div>
           </div>
           
-          <div className="loading-glitch-text">
+          <div className="loading-glitch-text" style={{ marginBottom: '0' }}>
             {uploadMessage.toUpperCase()}
-          </div>
-          
-          <div className="loading-log-container">
-            <div>&gt; initialize_mediapipe_vision</div>
-            <div>&gt; extract_skeleton_nodes [OK]</div>
-            <div style={{ color: 'var(--gold-dark)' }}>&gt; computing_kinematics... {Math.round(uploadProgress)}%</div>
           </div>
         </div>
       )}
