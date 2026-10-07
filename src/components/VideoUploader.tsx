@@ -85,7 +85,7 @@ const VideoUploader: React.FC<Props> = ({ onUploadSuccess }) => {
     // Wait for DOM to render the video and canvas elements
     setTimeout(async () => {
         if (!liveVideoRef.current || !canvasRef.current) return;
-        
+        try {
             // Set up MediaPipe
             const pose = new Pose({
                 locateFile: (file: any) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`,
