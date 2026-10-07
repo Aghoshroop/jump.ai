@@ -337,3 +337,74 @@ export function generateCoaching(metrics: any) {
         bestTrait
     };
 }
+
+export function generatePhaseSpecificCoaching(phase: string, metrics: any) {
+    if (!metrics) return null;
+    
+    let good = '';
+    let improvement = '';
+    let drill = '';
+    
+    if (phase === 'penultimate') {
+        const torso = metrics.torso_angle || 0;
+        if (torso <= 15) {
+            good = `"Elite posture." You kept your torso nicely upright at ${torso}°, which primes your body for max vertical lift.`;
+            improvement = `Maintain this form. If you want more power, ensure your penultimate stride is your longest.`;
+            drill = `Med-ball run-throughs to continue enforcing perfect posture.`;
+        } else {
+            good = `You entered the penultimate step with good speed.`;
+            improvement = `"Raise your chest." You leaned forward to ${torso}°, shifting center of mass too far forward.`;
+            drill = `Run-throughs with a medicine ball held at chest height to enforce upright posture.`;
+        }
+    } else if (phase === 'plant') {
+        const knee = metrics.plant_knee_angle || 0;
+        if (knee >= 135 && knee <= 165) {
+            good = `"Perfect Board Plant." Your plant knee held strong at ${knee}°.`;
+            improvement = `You successfully converted horizontal velocity into vertical lift. Focus on snapping the free leg up faster.`;
+            drill = `Continuous pop-ups off a short approach to maintain this reflex.`;
+        } else if (knee < 135) {
+            good = `You attacked the board aggressively.`;
+            improvement = `"Stiffen your plant leg." Your knee collapsed to ${knee}°. You absorbed speed instead of popping up.`;
+            drill = `Short approach pop-ups focusing on a stiff, quick ground contact.`;
+        } else {
+            good = `You planted with extremely stiff leverage.`;
+            improvement = `"Allow a slight bend." Your knee was locked straight at ${knee}°, causing a braking force.`;
+            drill = `Box drop jumps to learn proper energy absorption and redirection.`;
+        }
+    } else if (phase === 'toe_off') {
+        const knee = metrics.plant_knee_angle || 0;
+        if (knee >= 165) {
+            good = `"Explosive Takeoff." Full extension achieved at ${knee}°!`;
+            improvement = `You maximized power output. To squeeze out more distance, ensure your arm swing is completely synced.`;
+            drill = `Continue doing resisted bounding to maintain this extreme power output.`;
+        } else {
+            good = `You achieved decent liftoff speed.`;
+            improvement = `"Fully extend your jumping leg." You only reached ${knee}° extension, leaving the ground too early.`;
+            drill = `Bounding drills focusing on pushing completely through the ankle and knee.`;
+        }
+    } else if (phase === 'flight') {
+        const torso = metrics.torso_angle || 0;
+        if (torso <= 25) {
+            good = `"Stable Mechanics." You maintained a strong, upright torso at ${torso}° in the air.`;
+            improvement = `Your hang time is maximized. Focus on bringing the legs up higher during the final descent.`;
+            drill = `Hang technique drills off a springboard to perfect arm cycling.`;
+        } else {
+            good = `You successfully cleared the board phase.`;
+            improvement = `"Hold your chest up." You rotated forward to a ${torso}° torso angle too early, causing premature leg drop.`;
+            drill = `Hang technique drills off a springboard to get comfortable with air time.`;
+        }
+    } else if (phase === 'landing') {
+        const torso = metrics.torso_angle || 0;
+        if (torso >= 35) {
+            good = `"Deep Landing Compression." You compressed forward to ${torso}° perfectly.`;
+            improvement = `Your mass carried past your heels. Work on shooting the feet out an extra inch just before contact.`;
+            drill = `Sand pit landing drills from a standing jump to drill leg extension.`;
+        } else {
+            good = `You landed safely with both feet.`;
+            improvement = `"Reach forward." Your torso was too upright at ${torso}°, causing you to sit back and lose distance.`;
+            drill = `Standing long jumps focusing exclusively on sweeping arms back and throwing legs high.`;
+        }
+    }
+    
+    return { good, improvement, drill };
+}

@@ -1,4 +1,5 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
+import { generatePhaseSpecificCoaching } from '../lib/jumpLogic';
 
 const POSE_CONNECTIONS = (window as any).POSE_CONNECTIONS;
 const drawConnectors = (window as any).drawConnectors;
@@ -13,6 +14,8 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  const [activePhaseDetail, setActivePhaseDetail] = useState<{name: string, data: any, analysis: any} | null>(null);
 
   const toggleFullscreen = () => {
       if (!document.fullscreenElement) {
@@ -138,17 +141,28 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
                             )}
                         </div>
                         
-                        <button className="secondary-btn mt-4" style={{ width: '100%' }}
-                            onClick={() => {
-                                if (videoRef.current) {
-                                    videoRef.current.currentTime = phaseData.timestamp;
-                                    videoRef.current.pause();
-                                    videoRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                }
-                            }}
-                        >
-                            Go to Video Frame
-                        </button>
+                        <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+                            <button className="secondary-btn" style={{ flex: 1, padding: '0.6rem' }}
+                                onClick={() => {
+                                    if (videoRef.current) {
+                                        videoRef.current.currentTime = phaseData.timestamp;
+                                        videoRef.current.pause();
+                                        videoRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                    }
+                                }}
+                            >
+                                🎥 View Frame
+                            </button>
+                            <button 
+                                style={{ flex: 1, background: 'var(--gold-dark)', color: '#fff', border: 'none', borderRadius: '50px', fontWeight: 'bold', cursor: 'pointer', fontFamily: 'Syne, sans-serif' }}
+                                onClick={() => {
+                                    const analysis = generatePhaseSpecificCoaching(phaseName, result.metrics?.[phaseName]);
+                                    setActivePhaseDetail({ name: phaseName, data: phaseData, analysis });
+                                }}
+                            >
+                                🔬 Deep Dive
+                            </button>
+                        </div>
                     </div>
                 </div>
             ))}
@@ -203,6 +217,36 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
             )}
         </div>
       </div>
+
+      {activePhaseDetail && activePhaseDetail.analysis && (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.8)', zIndex: 999999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }} onClick={() => setActivePhaseDetail(null)}>
+           <div style={{ background: 'var(--sand-2)', width: '100%', maxWidth: '600px', borderRadius: '24px', overflow: 'hidden', display: 'flex', flexDirection: 'column', maxHeight: '90vh' }} onClick={e => e.stopPropagation()}>
+               {activePhaseDetail.data.image_url && (
+                   <div style={{ width: '100%', height: '200px', backgroundImage: `url(${activePhaseDetail.data.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
+                       <button onClick={() => setActivePhaseDetail(null)} style={{ position: 'absolute', top: '1rem', right: '1rem', background: '#000', color: '#fff', border: 'none', width: '36px', height: '36px', borderRadius: '18px', fontSize: '1.2rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
+                   </div>
+               )}
+               <div style={{ padding: '2rem', overflowY: 'auto' }}>
+                   <h2 style={{ fontFamily: 'Syne, sans-serif', color: 'var(--espresso)', textTransform: 'uppercase', marginBottom: '2rem', fontSize: '2rem' }}>{activePhaseDetail.name} <span style={{ color: 'var(--gold-dark)' }}>Analysis</span></h2>
+                   
+                   <div style={{ marginBottom: '2rem' }}>
+                       <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#10b981', marginBottom: '0.5rem' }}><span>✓</span> What you're doing right</h3>
+                       <p style={{ color: 'var(--text-body)', lineHeight: 1.6, paddingLeft: '1.5rem', borderLeft: '2px solid #10b981' }}>{activePhaseDetail.analysis.good}</p>
+                   </div>
+                   
+                   <div style={{ marginBottom: '2rem' }}>
+                       <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#f59e0b', marginBottom: '0.5rem' }}><span>⚠</span> Where to improve</h3>
+                       <p style={{ color: 'var(--text-body)', lineHeight: 1.6, paddingLeft: '1.5rem', borderLeft: '2px solid #f59e0b' }}>{activePhaseDetail.analysis.improvement}</p>
+                   </div>
+
+                   <div style={{ background: '#fff', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--gold-dark)' }}>
+                       <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--espresso)', marginBottom: '0.5rem' }}><span>🏋️</span> Recommended Drill</h3>
+                       <p style={{ color: 'var(--text-body)', lineHeight: 1.6, margin: 0 }}>{activePhaseDetail.analysis.drill}</p>
+                   </div>
+               </div>
+           </div>
+        </div>
+      )}
     </div>
   );
 };
