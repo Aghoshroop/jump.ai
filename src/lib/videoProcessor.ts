@@ -134,7 +134,7 @@ export async function processVideoFile(file: File | Blob, onProgress: (progress:
                                     }
                                     r(null);
                                 };
-                                img.src = closestFrame.image_url;
+                                img.src = closestFrame.image_url || '';
                             });
                         }
                     }
