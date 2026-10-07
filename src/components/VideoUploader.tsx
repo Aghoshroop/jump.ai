@@ -247,7 +247,7 @@ const VideoUploader: React.FC<Props> = ({ onUploadSuccess }) => {
           </div>
         </div>
       ) : (
-        <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
+        <div className="upload-options-container">
             <div 
               className={`upload-zone ${isDragActive ? 'drag-active' : ''}`}
               style={{ flex: 1 }}

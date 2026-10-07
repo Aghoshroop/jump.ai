@@ -384,6 +384,12 @@ button {
 }
 
 /* Upload zone */
+.upload-options-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
 .upload-zone {
   border: 2px dashed var(--gold-light);
   border-radius: 32px;
@@ -441,10 +447,32 @@ button {
   .engine-card-title {
     font-size: 1.5rem;
   }
+  .upload-options-container {
+    flex-direction: column;
+  }
   .upload-zone {
-    padding: 3rem 1.5rem;
+    padding: 1.5rem !important;
     border-radius: 24px;
-    margin: 1.5rem auto;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .upload-zone .upload-icon {
+    margin-bottom: 0 !important;
+  }
+  .upload-zone .upload-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+  .upload-zone h4 {
+    margin: 0 !important;
+    font-size: 1.2rem !important;
+  }
+  .upload-zone p {
+    display: none;
   }
   .header {
     flex-direction: column;
