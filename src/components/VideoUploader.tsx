@@ -1,6 +1,7 @@
 import React, { useState, useRef, type DragEvent } from 'react';
 import type * as mpCam from '@mediapipe/camera_utils';
 import { processVideoFile } from '../lib/videoProcessor';
+import MiniGame from './MiniGame';
 
 const Pose = (window as any).Pose;
 const POSE_CONNECTIONS = (window as any).POSE_CONNECTIONS;
@@ -294,6 +295,8 @@ const VideoUploader: React.FC<Props> = ({ onUploadSuccess }) => {
           <div className="loading-glitch-text" style={{ marginBottom: '0' }}>
             {uploadMessage.toUpperCase()}
           </div>
+          
+          <MiniGame />
         </div>
       )}
     </div>
