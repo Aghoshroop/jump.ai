@@ -87,7 +87,7 @@ function App() {
             <div className="container">
               <div className="text-center" style={{ marginBottom: '4rem' }}>
                 <h2 className="section-title" style={{ fontSize: 'clamp(1rem, 3vw, 1.5rem)', color: 'var(--gold-dark)', letterSpacing: '4px' }}>THE ENGINE</h2>
-                <h3 style={{ fontSize: 'clamp(1.8rem, 10vw, 4rem)', margin: 0, wordWrap: 'break-word', hyphens: 'auto' }}>Built for Champions.</h3>
+                <h3 style={{ fontSize: 'clamp(1.8rem, 10vw, 4rem)', margin: 0 }}>Built for<br/>Champions.</h3>
               </div>
               
               <div className="grid engine-grid">

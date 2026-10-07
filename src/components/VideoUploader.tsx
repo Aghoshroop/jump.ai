@@ -210,7 +210,7 @@ const VideoUploader: React.FC<Props> = ({ onUploadSuccess }) => {
   };
 
   return (
-    <div className="card text-center" style={{ maxWidth: '800px', margin: '0 auto', padding: '3rem' }}>
+    <div className="text-center" style={{ maxWidth: '800px', margin: '0 auto', padding: '1rem' }}>
       <input type="file" accept="video/mp4,video/quicktime,video/webm" style={{ display: 'none' }} ref={fileInputRef} onChange={handleFileChange} />
       
       <h3 style={{ color: 'var(--accent-gold)', marginBottom: '0.5rem', fontSize: '2rem' }}>Analyze Your Jump</h3>
