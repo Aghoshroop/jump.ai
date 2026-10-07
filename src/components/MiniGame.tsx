@@ -7,7 +7,7 @@ const LongJumpGame: React.FC = () => {
   const [distance, setDistance] = useState(0);
   const [highScore, setHighScore] = useState(0);
   
-  const reqRef = useRef<number>();
+  const reqRef = useRef<number>(0);
   const valRef = useRef(0);
   const dirRef = useRef(1);
 
@@ -130,7 +130,7 @@ const HurdleDashGame: React.FC = () => {
   
   const velocity = useRef(0);
   const isJumping = useRef(false);
-  const requestRef = useRef<number>();
+  const requestRef = useRef<number>(0);
 
   const startGame = (e?: React.MouseEvent) => {
     if(e) e.stopPropagation();
