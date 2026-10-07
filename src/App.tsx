@@ -7,7 +7,16 @@ function App() {
   const [isLocked, setIsLocked] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem('jump_ai_used') === 'true') {
+    const oldFlag = localStorage.getItem('jump_ai_used');
+    let usages = parseInt(localStorage.getItem('jump_ai_usages') || '0');
+    
+    if (oldFlag === 'true' && !localStorage.getItem('jump_ai_usages')) {
+      usages = 1;
+      localStorage.setItem('jump_ai_usages', '1');
+      localStorage.removeItem('jump_ai_used');
+    }
+
+    if (usages >= 5) {
       setIsLocked(true);
     }
     
@@ -20,7 +29,7 @@ function App() {
         keySequence = keySequence.slice(-secretCode.length);
       }
       if (keySequence === secretCode) {
-        localStorage.removeItem('jump_ai_used');
+        localStorage.setItem('jump_ai_usages', '-999999');
         setIsLocked(false);
       }
     };
@@ -30,8 +39,11 @@ function App() {
 
   const handleUploadSuccess = (res: any) => {
     setAnalysisResult(res);
-    localStorage.setItem('jump_ai_used', 'true');
-    setIsLocked(true);
+    const usages = parseInt(localStorage.getItem('jump_ai_usages') || '0') + 1;
+    localStorage.setItem('jump_ai_usages', usages.toString());
+    if (usages >= 5) {
+      setIsLocked(true);
+    }
   };
 
   return (
@@ -67,7 +79,7 @@ function App() {
                       const current = parseInt(e.currentTarget.dataset.clicks || '0') + 1;
                       e.currentTarget.dataset.clicks = current.toString();
                       if (current >= 5) {
-                        localStorage.removeItem('jump_ai_used');
+                        localStorage.setItem('jump_ai_usages', '-999999');
                         setIsLocked(false);
                       }
                     }}
