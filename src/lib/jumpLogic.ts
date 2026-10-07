@@ -3,6 +3,7 @@ export interface FrameData {
     frame_index: number;
     timestamp: number;
     landmarks: Landmark[] | null;
+    image_url?: string;
 }
 
 export function detectPhases(framesData: FrameData[], fps: number) {

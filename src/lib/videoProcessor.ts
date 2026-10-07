@@ -34,12 +34,19 @@ export async function processVideoFile(file: File | Blob, onProgress: (progress:
             });
 
             let currentProcessingTimestamp = 0;
+            let currentImageUrl = '';
+            
+            const processCanvas = document.createElement('canvas');
+            processCanvas.width = video.videoWidth;
+            processCanvas.height = video.videoHeight;
+            const processCtx = processCanvas.getContext('2d');
 
             pose.onResults((results: any) => {
                 framesData.push({
                     frame_index: frameIndex,
                     timestamp: currentProcessingTimestamp,
-                    landmarks: results.poseLandmarks || null
+                    landmarks: results.poseLandmarks || null,
+                    image_url: currentImageUrl
                 });
                 frameIndex++;
                 
@@ -64,7 +71,12 @@ export async function processVideoFile(file: File | Blob, onProgress: (progress:
             video.onseeked = async () => {
                 try {
                     currentProcessingTimestamp = video.currentTime;
-                    await pose.send({ image: video });
+                    if (processCtx) {
+                        processCtx.drawImage(video, 0, 0, processCanvas.width, processCanvas.height);
+                        // Store it heavily compressed just to keep memory low, but high enough quality for phases
+                        currentImageUrl = processCanvas.toDataURL('image/jpeg', 0.6);
+                        await pose.send({ image: processCanvas });
+                    }
                     currentTime += step;
                     processNextFrame();
                 } catch (e) {
@@ -102,33 +114,29 @@ export async function processVideoFile(file: File | Blob, onProgress: (progress:
                 for (const phase in phases) {
                     const phaseData = (phases as any)[phase];
                     if (phaseData && phaseData.timestamp !== undefined) {
-                        video.currentTime = phaseData.timestamp;
-                        await new Promise(r => {
-                            video.onseeked = () => {
-                                if (ctx) {
-                                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                                    
-                                    // Draw the tracking pipeline skeleton on the phase image
-                                    let closestFrame = framesData[0];
-                                    let minDiff = Infinity;
-                                    for (let i = 0; i < framesData.length; i++) {
-                                        const diff = Math.abs(framesData[i].timestamp - phaseData.timestamp);
-                                        if (diff < minDiff) {
-                                            minDiff = diff;
-                                            closestFrame = framesData[i];
+                        // Find the EXACT frame we saved during processing
+                        const closestFrame = framesData.find(f => f.timestamp === phaseData.timestamp);
+                        
+                        if (closestFrame && closestFrame.image_url) {
+                            await new Promise(r => {
+                                const img = new Image();
+                                img.onload = () => {
+                                    if (ctx) {
+                                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                                        
+                                        // Draw the tracking pipeline skeleton
+                                        if (closestFrame.landmarks) {
+                                            drawConnectors(ctx, closestFrame.landmarks, POSE_CONNECTIONS, { color: '#00FF00', lineWidth: 4 });
+                                            drawLandmarks(ctx, closestFrame.landmarks, { color: '#FF0000', lineWidth: 2, radius: 3 });
                                         }
+                                        
+                                        phaseData.image_url = canvas.toDataURL('image/jpeg', 0.8);
                                     }
-                                    
-                                    if (closestFrame && closestFrame.landmarks && minDiff < 0.1) {
-                                        drawConnectors(ctx, closestFrame.landmarks, POSE_CONNECTIONS, { color: '#00FF00', lineWidth: 4 });
-                                        drawLandmarks(ctx, closestFrame.landmarks, { color: '#FF0000', lineWidth: 2, radius: 3 });
-                                    }
-                                    
-                                    phaseData.image_url = canvas.toDataURL('image/jpeg', 0.7);
-                                }
-                                r(null);
-                            };
-                        });
+                                    r(null);
+                                };
+                                img.src = closestFrame.image_url;
+                            });
+                        }
                     }
                 }
                 
