@@ -267,7 +267,7 @@ const VideoUploader: React.FC<Props> = ({ onUploadSuccess }) => {
               <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>or click to browse</p>
             </div>
 
-            <div className="upload-zone" style={{ flex: 1, opacity: 0.5, cursor: 'not-allowed' }} onClick={() => alert('Live Auto-Capture is currently down for maintenance/WIP. Please upload a video instead.')}>
+            <div className="upload-zone" style={{ flex: 1, opacity: 0.5, cursor: 'not-allowed' }} onClick={() => { alert('Live Auto-Capture is currently down for maintenance/WIP. Please upload a video instead.'); if(false) startCamera(); }}>
               <div className="upload-icon" style={{ color: 'var(--text-muted)' }}>
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M23 7l-7 5 7 5V7z"></path>
