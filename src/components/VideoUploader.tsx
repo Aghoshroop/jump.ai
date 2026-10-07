@@ -226,23 +226,23 @@ const VideoUploader: React.FC<Props> = ({ onUploadSuccess }) => {
       )}
 
       {isCameraActive ? (
-        <div style={{ marginBottom: '2rem', position: 'relative', borderRadius: '12px', overflow: 'hidden', background: '#000', border: jumpDetected ? '4px solid #00FF00' : '4px solid transparent', transition: 'border 0.3s' }}>
-          <video ref={liveVideoRef} autoPlay playsInline muted style={{ width: '100%', maxHeight: '500px', objectFit: 'cover' }} />
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 9999, background: '#000', border: jumpDetected ? '8px solid #00FF00' : 'none', transition: 'border 0.3s', boxSizing: 'border-box' }}>
+          <video ref={liveVideoRef} autoPlay playsInline muted style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
           
-          <div style={{ position: 'absolute', top: '20px', left: '20px', background: 'rgba(0,0,0,0.7)', padding: '10px 20px', borderRadius: '8px', color: 'white', fontWeight: 'bold', fontSize: '1.2rem' }}>
+          <div style={{ position: 'absolute', top: '30px', left: '30px', background: 'rgba(0,0,0,0.7)', padding: '10px 20px', borderRadius: '8px', color: 'white', fontWeight: 'bold', fontSize: '1.5rem', zIndex: 10000 }}>
              {recordingTime}s remaining
           </div>
 
           {jumpDetected && (
-              <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: 'rgba(0, 255, 0, 0.9)', color: 'black', padding: '1rem 3rem', borderRadius: '50px', fontSize: '2.5rem', fontWeight: 900, textTransform: 'uppercase', boxShadow: '0 0 30px #00FF00' }}>
+              <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: 'rgba(0, 255, 0, 0.9)', color: 'black', padding: '1.5rem 4rem', borderRadius: '50px', fontSize: '3rem', fontWeight: 900, textTransform: 'uppercase', boxShadow: '0 0 40px #00FF00', zIndex: 10000 }}>
                   JUMP DETECTED!
-                  <div style={{ fontSize: '1rem', marginTop: '10px' }}>Stopping in 2 seconds...</div>
+                  <div style={{ fontSize: '1.2rem', marginTop: '10px', textAlign: 'center' }}>Stopping in 2 seconds...</div>
               </div>
           )}
           
-          <div style={{ position: 'absolute', bottom: '20px', left: '0', right: '0', display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-            <button className="primary-btn" onClick={() => { setWarningMsg(''); stopCamera(); }} style={{ background: '#333', borderRadius: '50px', padding: '0.8rem 2rem', border: '2px solid #ff4444' }}>
+          <div style={{ position: 'absolute', bottom: '40px', left: '0', right: '0', display: 'flex', justifyContent: 'center', gap: '1rem', zIndex: 10000 }}>
+            <button className="primary-btn" onClick={() => { setWarningMsg(''); stopCamera(); }} style={{ background: '#333', borderRadius: '50px', padding: '1rem 3rem', border: '2px solid #ff4444', fontSize: '1.2rem', color: 'white', cursor: 'pointer' }}>
               Cancel
             </button>
           </div>
@@ -268,15 +268,15 @@ const VideoUploader: React.FC<Props> = ({ onUploadSuccess }) => {
               <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>or click to browse</p>
             </div>
 
-            <div className="upload-zone" style={{ flex: 1, opacity: 0.5, cursor: 'not-allowed' }} onClick={() => { alert('Live Auto-Capture is currently down for maintenance/WIP. Please upload a video instead.'); if(false) startCamera(); }}>
-              <div className="upload-icon" style={{ color: 'var(--text-muted)' }}>
+            <div className="upload-zone" style={{ flex: 1, cursor: 'pointer' }} onClick={() => startCamera()}>
+              <div className="upload-icon" style={{ color: 'var(--accent-gold)' }}>
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M23 7l-7 5 7 5V7z"></path>
                   <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
                 </svg>
               </div>
-              <h4 style={{ fontSize: '1.2rem', margin: '1rem 0 0.5rem', color: 'var(--text-muted)' }}>Camera (WIP)</h4>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Coming soon...</p>
+              <h4 style={{ fontSize: '1.2rem', margin: '1rem 0 0.5rem', color: 'var(--text-main)' }}>Live Camera</h4>
+              <p style={{ color: 'var(--accent-gold)', fontSize: '0.9rem', fontWeight: 'bold' }}>Auto-Detects Jump</p>
             </div>
         </div>
       )}
