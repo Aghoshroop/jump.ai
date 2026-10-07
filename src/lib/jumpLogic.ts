@@ -155,6 +155,27 @@ export function calculateBiomechanics(framesData: FrameData[], phases: any) {
             metrics[phaseName] = {};
         }
     }
+    
+    // Physics Engine: Hang Time & Estimated Distance
+    if (phases.toe_off && phases.landing && phases.toe_off.timestamp !== undefined && phases.landing.timestamp !== undefined) {
+        let hangTime = phases.landing.timestamp - phases.toe_off.timestamp;
+        if (hangTime < 0 || hangTime > 2) hangTime = 0.6; // fallback for bad data
+        
+        // H = (g * t^2) / 8
+        const heightMeters = (9.81 * hangTime * hangTime) / 8;
+        const heightInches = heightMeters * 39.37;
+        
+        // Long jump distance is roughly 6 to 8 times the apex height depending on speed.
+        const distMeters = heightMeters * 7.5;
+        const distFeet = distMeters * 3.28084;
+        
+        metrics.physics = {
+            hangTime: parseFloat(hangTime.toFixed(3)),
+            maxHeightInches: parseFloat(heightInches.toFixed(1)),
+            estDistanceFeet: parseFloat(distFeet.toFixed(1))
+        };
+    }
+    
     return metrics;
 }
 
