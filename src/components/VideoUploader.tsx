@@ -267,15 +267,15 @@ const VideoUploader: React.FC<Props> = ({ onUploadSuccess }) => {
               <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>or click to browse</p>
             </div>
 
-            <div className="upload-zone" style={{ flex: 1, borderColor: 'var(--accent-gold)' }} onClick={() => !isUploading && startCamera()}>
-              <div className="upload-icon" style={{ color: 'var(--accent-gold)' }}>
+            <div className="upload-zone" style={{ flex: 1, opacity: 0.5, cursor: 'not-allowed' }} onClick={() => alert('Live Auto-Capture is currently down for maintenance/WIP. Please upload a video instead.')}>
+              <div className="upload-icon" style={{ color: 'var(--text-muted)' }}>
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M23 7l-7 5 7 5V7z"></path>
                   <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
                 </svg>
               </div>
-              <h4 style={{ fontSize: '1.2rem', margin: '1rem 0 0.5rem', color: 'var(--accent-gold)' }}>Auto-Capture Live</h4>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Real-time jump detection</p>
+              <h4 style={{ fontSize: '1.2rem', margin: '1rem 0 0.5rem', color: 'var(--text-muted)' }}>Camera (WIP)</h4>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Coming soon...</p>
             </div>
         </div>
       )}
