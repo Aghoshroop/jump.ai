@@ -230,17 +230,17 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
                    <h2 style={{ fontFamily: 'Syne, sans-serif', color: 'var(--espresso)', textTransform: 'uppercase', marginBottom: '1.5rem', fontSize: 'clamp(1.5rem, 6vw, 2rem)', lineHeight: 1.1 }}>{activePhaseDetail.name} <br/><span style={{ color: 'var(--gold-dark)' }}>Analysis</span></h2>
                    
                    <div style={{ marginBottom: '2rem' }}>
-                       <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#10b981', marginBottom: '0.5rem' }}><span>✓</span> What you're doing right</h3>
+                       <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#10b981', marginBottom: '0.5rem', fontSize: 'clamp(1rem, 5vw, 1.2rem)', wordBreak: 'break-word' }}><span>✓</span> What you're doing right</h3>
                        <p style={{ color: 'var(--text-body)', lineHeight: 1.6, paddingLeft: '1.5rem', borderLeft: '2px solid #10b981' }}>{activePhaseDetail.analysis.good}</p>
                    </div>
                    
                    <div style={{ marginBottom: '2rem' }}>
-                       <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#f59e0b', marginBottom: '0.5rem' }}><span>⚠</span> Where to improve</h3>
+                       <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#f59e0b', marginBottom: '0.5rem', fontSize: 'clamp(1rem, 5vw, 1.2rem)', wordBreak: 'break-word' }}><span>⚠</span> Where to improve</h3>
                        <p style={{ color: 'var(--text-body)', lineHeight: 1.6, paddingLeft: '1.5rem', borderLeft: '2px solid #f59e0b' }}>{activePhaseDetail.analysis.improvement}</p>
                    </div>
 
                    <div style={{ background: '#fff', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--gold-dark)' }}>
-                       <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--espresso)', marginBottom: '0.5rem' }}><span>🏋️</span> Recommended Drill</h3>
+                       <h3 style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', color: 'var(--espresso)', marginBottom: '0.5rem', fontSize: 'clamp(1.1rem, 5.5vw, 1.3rem)', wordBreak: 'break-word', flexWrap: 'wrap' }}><span>🏋️</span> Recommended Drill</h3>
                        <p style={{ color: 'var(--text-body)', lineHeight: 1.6, margin: 0 }}>{activePhaseDetail.analysis.drill}</p>
                    </div>
                </div>
