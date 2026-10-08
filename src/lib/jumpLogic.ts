@@ -165,9 +165,10 @@ export function calculateBiomechanics(framesData: FrameData[], phases: any) {
         const heightMeters = (9.81 * hangTime * hangTime) / 8;
         const heightInches = heightMeters * 39.37;
         
-        // Long jump distance is roughly 6 to 8 times the apex height depending on speed.
-        const distMeters = heightMeters * 7.5;
-        const distFeet = distMeters * 3.28084;
+        // Long jumpers carry massive horizontal velocity (8-10 m/s).
+        // Distance is roughly proportional to hangTime squared in athletic populations.
+        // A 0.6s hang time typically yields around a 19 foot jump for competitive athletes.
+        const distFeet = (hangTime * hangTime) * 52.8;
         
         metrics.physics = {
             hangTime: parseFloat(hangTime.toFixed(3)),
