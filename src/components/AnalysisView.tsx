@@ -113,37 +113,6 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
       <div className="mt-4" style={{ paddingTop: '2rem' }}>
         <h2 className="text-center" style={{ fontSize: 'clamp(2rem, 6vw, 2.5rem)', marginBottom: '3rem' }}>Analysis Complete</h2>
         
-        {/* NEW HANG TIME PHYSICS ENGINE */}
-        {result.metrics?.physics && (
-            <div style={{ background: '#111', borderRadius: '24px', padding: '3rem 2rem', marginBottom: '4rem', color: 'white', position: 'relative', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.4)' }}>
-                <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '200px', height: '200px', background: 'radial-gradient(circle, rgba(16,185,129,0.2) 0%, transparent 70%)', borderRadius: '50%' }}></div>
-                
-                <h3 style={{ margin: 0, color: '#10b981', fontSize: '1.2rem', letterSpacing: '4px', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                    PHYSICS ENGINE
-                </h3>
-                
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', justifyContent: 'space-between' }}>
-                    <div style={{ flex: '1 1 200px' }}>
-                        <p style={{ color: '#888', margin: '0 0 0.5rem 0', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '2px' }}>Air Time</p>
-                        <p style={{ fontSize: '3.5rem', fontWeight: 900, margin: 0, fontFamily: 'Syne, sans-serif' }}>{result.metrics.physics.hangTime} <span style={{ fontSize: '1.5rem', color: '#666' }}>s</span></p>
-                    </div>
-                    <div style={{ flex: '1 1 200px' }}>
-                        <p style={{ color: '#888', margin: '0 0 0.5rem 0', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '2px' }}>Max Height</p>
-                        <p style={{ fontSize: '3.5rem', fontWeight: 900, margin: 0, fontFamily: 'Syne, sans-serif' }}>{result.metrics.physics.maxHeightInches} <span style={{ fontSize: '1.5rem', color: '#666' }}>in</span></p>
-                    </div>
-                    <div style={{ flex: '1 1 200px' }}>
-                        <p style={{ color: '#888', margin: '0 0 0.5rem 0', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '2px' }}>Est. Distance</p>
-                        <p style={{ fontSize: '3.5rem', fontWeight: 900, margin: 0, fontFamily: 'Syne, sans-serif', color: '#10b981' }}>{result.metrics.physics.estDistanceFeet} <span style={{ fontSize: '1.5rem', color: '#10b981' }}>ft</span></p>
-                    </div>
-                </div>
-                
-                <p style={{ marginTop: '2rem', color: '#aaa', fontSize: '0.9rem', fontStyle: 'italic', maxWidth: '600px', lineHeight: 1.6 }}>
-                    Calculated dynamically by isolating your takeoff and landing frames (∆t = {result.metrics.physics.hangTime}s), then driving a standard parabolic trajectory engine (H = g·t² / 8) to approximate vertical lift and horizontal carry.
-                </p>
-            </div>
-        )}
-
         <h3 style={{ textAlign: 'center', marginBottom: '2rem', color: 'var(--gold-dark)', fontSize: 'clamp(1rem, 4vw, 1.2rem)' }}>PHASE BREAKDOWN</h3>
         <div className="grid" style={{ marginBottom: '4rem' }}>
             {Object.entries(result.phases || {}).map(([phaseName, phaseData]: [string, any]) => (

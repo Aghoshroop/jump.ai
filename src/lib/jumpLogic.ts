@@ -155,28 +155,6 @@ export function calculateBiomechanics(framesData: FrameData[], phases: any) {
             metrics[phaseName] = {};
         }
     }
-    
-    // Physics Engine: Hang Time & Estimated Distance
-    if (phases.toe_off && phases.landing && phases.toe_off.timestamp !== undefined && phases.landing.timestamp !== undefined) {
-        let hangTime = phases.landing.timestamp - phases.toe_off.timestamp;
-        if (hangTime < 0 || hangTime > 2) hangTime = 0.6; // fallback for bad data
-        
-        // H = (g * t^2) / 8
-        const heightMeters = (9.81 * hangTime * hangTime) / 8;
-        const heightInches = heightMeters * 39.37;
-        
-        // Horizontal distance is linear with respect to air time (d = v_x * t).
-        // Assuming a fast elite approach (v_x ≈ 9.6 m/s or 31.66 ft/s):
-        // 0.6s hang time = ~19 feet. 0.8s hang time = ~25 feet.
-        const distFeet = hangTime * 31.66;
-        
-        metrics.physics = {
-            hangTime: parseFloat(hangTime.toFixed(3)),
-            maxHeightInches: parseFloat(heightInches.toFixed(1)),
-            estDistanceFeet: parseFloat(distFeet.toFixed(1))
-        };
-    }
-    
     return metrics;
 }
 
