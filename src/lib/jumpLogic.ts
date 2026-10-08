@@ -165,10 +165,10 @@ export function calculateBiomechanics(framesData: FrameData[], phases: any) {
         const heightMeters = (9.81 * hangTime * hangTime) / 8;
         const heightInches = heightMeters * 39.37;
         
-        // Long jumpers carry massive horizontal velocity (8-10 m/s).
-        // Distance is roughly proportional to hangTime squared in athletic populations.
-        // A 0.6s hang time typically yields around a 19 foot jump for competitive athletes.
-        const distFeet = (hangTime * hangTime) * 52.8;
+        // Horizontal distance is linear with respect to air time (d = v_x * t).
+        // Assuming a fast elite approach (v_x ≈ 9.6 m/s or 31.66 ft/s):
+        // 0.6s hang time = ~19 feet. 0.8s hang time = ~25 feet.
+        const distFeet = hangTime * 31.66;
         
         metrics.physics = {
             hangTime: parseFloat(hangTime.toFixed(3)),
