@@ -219,8 +219,8 @@ const AnalysisView: React.FC<Props> = ({ result, onBack }) => {
       </div>
 
       {activePhaseDetail && activePhaseDetail.analysis && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.8)', zIndex: 999999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }} onClick={() => setActivePhaseDetail(null)}>
-           <div style={{ background: 'var(--sand-2)', width: '100%', maxWidth: '600px', borderRadius: '24px', overflow: 'hidden', display: 'flex', flexDirection: 'column', maxHeight: '90vh' }} onClick={e => e.stopPropagation()}>
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', zIndex: 999999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', boxSizing: 'border-box' }} onClick={() => setActivePhaseDetail(null)}>
+           <div style={{ background: 'var(--sand-2)', width: '100%', maxWidth: '600px', borderRadius: '24px', overflow: 'hidden', display: 'flex', flexDirection: 'column', maxHeight: '90vh', boxSizing: 'border-box' }} onClick={e => e.stopPropagation()}>
                {activePhaseDetail.data.image_url && (
                    <div style={{ width: '100%', height: '200px', minHeight: '200px', flexShrink: 0, backgroundImage: `url(${activePhaseDetail.data.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
                        <button onClick={() => setActivePhaseDetail(null)} style={{ position: 'absolute', top: '1rem', right: '1rem', background: '#000', color: '#fff', border: 'none', width: '36px', height: '36px', borderRadius: '18px', fontSize: '1.2rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10 }}>✕</button>
