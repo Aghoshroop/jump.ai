@@ -16,7 +16,7 @@ function App() {
       localStorage.removeItem('jump_ai_used');
     }
 
-    if (usages >= 5) {
+    if (usages >= 3) {
       setIsLocked(true);
     }
     
@@ -41,7 +41,7 @@ function App() {
     setAnalysisResult(res);
     const usages = parseInt(localStorage.getItem('jump_ai_usages') || '0') + 1;
     localStorage.setItem('jump_ai_usages', usages.toString());
-    if (usages >= 5) {
+    if (usages >= 3) {
       setIsLocked(true);
     }
   };
